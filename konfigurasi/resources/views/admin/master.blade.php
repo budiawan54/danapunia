@@ -101,6 +101,7 @@ desired effect
         <li id="li_nilai_siswa"><a href="{{route('nilai_siswa')}}"><i class="fa fa-edit"></i> <span>Edit Nilai Siswa</span></a></li>
         <li id="li_prf"><a href="{{route('profil')}}"><i class="fa fa-edit"></i><span>Ubah Profil</span></a></li>
         <li id="li_cal"><a href="{{route('kalender')}}"><i class="fa fa-calendar"></i><span>Kalender Acara</span></a></li>
+        <li id="li_schedule"><a href="{{route('kalender')}}"><i class="fa fa-book"></i><span>Jadwal Pelajaran</span></a></li>
         <li><a href="/logout"><i class="fa fa-sign-out"></i><span>Keluar</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->

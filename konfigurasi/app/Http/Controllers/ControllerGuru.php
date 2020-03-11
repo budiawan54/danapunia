@@ -59,6 +59,7 @@ class ControllerGuru extends Controller
         ->where('nama_siswa', 'LIKE', "%{$query}%")
         ->where('kelas','=',session::get('akses_siswa'))
         ->get();
+      if ( count($data) > 0){
       foreach($data as $row){
       $output = '<div>';}
       foreach($data as $row)
@@ -69,7 +70,10 @@ class ControllerGuru extends Controller
       }
       $output .= '</div>';
       echo $output;
+     } else {
+     	echo "<p class='alert list'>Tidak ada data</p>";
      }
+ 	}
     }
 
     public function nilai($id){

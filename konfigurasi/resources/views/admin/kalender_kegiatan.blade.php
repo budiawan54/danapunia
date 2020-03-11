@@ -6,8 +6,7 @@
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Admin</a></li>
-        <li class="active"><i class="fa fa-calendar"></i> Kalender</li>
+        <li class="active"><i class="fa fa-calendar"></i> Events</li>
       </ol>
     </section>
 @endsection
@@ -22,7 +21,7 @@
             <!-- /.box-header -->
           </div>
         </div>@endif
-      <div class="row">
+      <div class="row" id="row_add_event">
         <center><a class="btn btn-app"><i class="fa fa-plus"></i> Tambah Event</a></center>
       </div>
       <!-- akhir baris -->
@@ -57,8 +56,16 @@
                 $('#datetimepicker1 ').datetimepicker({
                   format : 'DD-MM-Y H:m'
                 })
+                $('.my-colorpicker2').colorpicker()
             });
   $(function () {
+
+    var session = '{{Session::get('type')}}';
+      if(session == 1){
+      $('#li_cal').attr('class','active');
+      $('title').text('Kalender Kegiatan');
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
+      
 
     /* initialize the calendar
      -----------------------------------------------------------------*/
@@ -79,6 +86,8 @@
       //Random default events
       
       events    : '{{route('loadevent')}}',
+
+
       selectable : function(element){
         $('#edit').modal('show');
       },
@@ -178,15 +187,40 @@
         $('#edit-event').modal('hide')
         alert("Events berhasil dihapus");
        },
-       error:function(error){
-        console.log(error)
-       }
       })
     })
+    } else {
+       $('#li_cal').attr('class','active');
+      $('#ln-dsb').attr('href','{{route('dashboard-guru')}}');
+      $('#foto_profil').attr('href','{{route('profil-guru')}}');      
+      $('title').text('Guru | Dashboard');
+      $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt').remove();
+      $('#li_schedule').attr('href','{{route('schedule')}}');
+      $('title').text('Kalender Kegiatan');
+      $('#row_add_event').addClass('hidden');
 
-    $('.my-colorpicker2').colorpicker()
+      $('#calendar').fullCalendar({
+      header    : {
+        left  : 'prev,next today',
+        center: 'title',
+        right : 'month,agendaWeek,agendaDay,list'
+      },
+      buttonText: {
+        today: 'Hari ini',
+        month: 'Bulan',
+        week : 'Minggu',
+        day  : 'Hari',
+        list :'Daftar',
+      },
+      //Random default events
+      
+      events    : '{{route('loadevent')}}'
+    })
+      } 
+    
   })
 
   // END CALENDER FUNCTION
+      
 </script>
 @endsection

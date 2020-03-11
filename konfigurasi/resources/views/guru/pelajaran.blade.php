@@ -77,7 +77,6 @@
             </div>
           </div>
 </section>
-@endsection
 @include('template.modal')
                 <!--MODAL EDIT-->
                   <div class="modal fade edit" id="edit">
@@ -117,3 +116,4 @@
                     <!-- /.modal-dialog -->
                   </div>
                 <!--BATAS MODAL EDIT-->
+@endsection

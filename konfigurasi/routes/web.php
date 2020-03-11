@@ -36,7 +36,7 @@ Route::get('admin/pegawai','ControllerUser@pegawai')->name('pegawai');
 Route::get('/admin/profil', 'ControllerAdmin@profil')->name('profil');
 Route::post('admin/ekstra/store','ControllerAdmin@storeEx');
 Route::get('admin/extra','ControllerAdmin@extra')->name('extra');
-route::get('admin/calender','ControllerAdmin@calendar')->name('kalender');
+route::get('event','ControllerAdmin@calendar')->name('kalender');
 route::get('guru/get/kegiatan','ControllerAdmin@dtkegiatan')->name('dtkegiatan');
 route::get('admin/get/kegiatan','ControllerAdmin@dtprestasi')->name('dtprestasi');
 route::get('guru/get/ekskul','ControllerAdmin@dtekskul')->name('dtekskul');

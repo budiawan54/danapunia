@@ -167,47 +167,43 @@
       case '/admin/status':
       $('#li_stts').attr('class','active');
       $('title').text('Status');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
       break;
       case '/admin/profil':
       $('#li_prf').attr('class','active');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
       $('title').text('Profil');
       break;
       case '/admin/pegawai':
       $('#li_emplo').attr('class','active');
       $('title').text('Data Pegawai');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
       break;
       case '/admin/pengguna':
       $('#li_user').attr('class','active');
       $('title').text('Data Pengguna');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
       break;
       case '/admin/extra':
       $('#li_xtr').attr('class','active');
       $('title').text('Data Ekstra Kurikuler');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
       break;
       case '/admin/kegiatan':
       $('#li_kgt').attr('class','active');
       $('title').text('Data Kegiatan');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
       break;
       case '/admin/prestasi':
       $('#li_prt').attr('class','active');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
       $('title').text('Prestasi Siswa');
       break;
-      case '/admin/calender':
-      $('#li_cal').attr('class','active');
-      $('title').text('Kalender Kegiatan');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
-      break;
+      
       case '/admin':
       $('#li_dsb').attr('class','active');
       $('title').text('Admin | Dashboard');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
       break;
       case '/guru':
       $('#li_dsb').attr('class','active');
@@ -215,8 +211,7 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Guru | Dashboard');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt').remove();
-      $('#li_cal').find('span').text('Jadwal Pelajaran');
-      $('#li_cal').find('a').attr('href','{{route('schedule')}}');
+      $('#li_schedule').attr('href','{{route('schedule')}}');
       break;
 
       case '/userbaru':
@@ -233,8 +228,7 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Data Mata Pelajaran');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt').remove();
-      $('#li_cal').find('span').text('Jadwal Pelajaran');
-      $('#li_cal').find('a').attr('href','{{route('schedule')}}');
+      
       break;
       case '/guru/siswa':
       $('#li_siswa').attr('class','active');
@@ -242,8 +236,6 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Tambah Siswa');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt').remove();
-      $('#li_cal').find('span').text('Jadwal Pelajaran');
-      $('#li_cal').find('a').attr('href','{{route('schedule')}}');
       break;
       case '/guru/nilai':
       $('#li_nilai_siswa').attr('class','active');
@@ -251,8 +243,6 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Silakan Masukkan Siswa Terlebih Dahulu');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt').remove();
-      $('#li_cal').find('span').text('Jadwal Pelajaran');
-      $('#li_cal').find('a').attr('href','{{route('schedule')}}');
       break;
       case '/guru/schedule':
       $('#li_cal').attr('class','active');
@@ -260,16 +250,12 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Silakan Masukkan Siswa Terlebih Dahulu');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt').remove();
-      $('#li_cal').find('span').text('Jadwal Pelajaran');
-      $('#li_cal').find('a').attr('href','{{route('schedule')}}');
       break;
       case '/guru/profil':
       $('#ln-dsb').attr('href','{{route('dashboard-guru')}}');
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Profil');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt').remove();
-      $('#li_cal').find('span').text('Jadwal Pelajaran');
-      $('#li_cal').find('a').attr('href','{{route('schedule')}}');
       break;
     }
     var judul = $('title').text();
@@ -278,8 +264,6 @@
       $('#ln-dsb').attr('href','{{route('dashboard-guru')}}');
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt').remove();
-      $('#li_cal').find('span').text('Jadwal Pelajaran');
-      $('#li_cal').find('a').attr('href','{{route('schedule')}}');
     }
   });
   //Date picker

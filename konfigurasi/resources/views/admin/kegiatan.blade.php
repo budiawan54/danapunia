@@ -6,7 +6,7 @@
         Daftar Kegiatan
       </h1>
       <ol class="breadcrumb">
-        <li><a href="../admin"><i class="fa fa-dashboard"></i> Admin</a></li>
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> Admin</a></li>
         <li><a href="#">kegiatan</a>
       </ol>
     </section>
@@ -106,7 +106,6 @@
         </div>
       <!-- /.row -->
 </section>
-@endsection
 @include('template.modal')
                                     <!--Default modal-->
                   <div class="modal fade" id="edit">
@@ -167,5 +166,5 @@
                     <!-- /.modal-dialog -->
                   </div>
                   <!-- /.modal -->
-
+@endsection
  

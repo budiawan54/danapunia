@@ -24,7 +24,7 @@
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-yellow">
               <div class="widget-user-image">
-                <img class="img-circle" src="{{url('/foto_siswa/'.$siswa->student_photos)}}" alt="User Avatar">
+                <img class="img-circle" src="{{url('/foto_siswa/'.$siswa->student_photos)}}" alt="foto siswa" style="height: 70px">
               </div>
               <!-- /.widget-user-image -->
               <h3 class="hidden" id="nomor_id">{{$siswa->id}}</h3>
@@ -225,6 +225,7 @@
           success:function(data){
            $('#listsiswa').fadeIn();  
                     $('#listsiswa').html(data);
+                    
           }
          });
         } else {

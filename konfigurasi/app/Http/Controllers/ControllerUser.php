@@ -287,18 +287,27 @@ public function proseslogin(Request $request) {
 		if(hash::check($password, $datauser->password)) {
 			if(($datauser->type) == 4) {
 				Session::put('nama_user',$datauser->username);
+				Session::put('user',$datauser->username);
+				Session::put('type',$datauser->type);
 				Session::put('loginuser', TRUE);
+				Session::put('login',TRUE);
 				return redirect('userbaru')->with('alert-success','Selamat Datang '.$datauser->nama);
 			} else {
 				if(($datauser->type)==1) {
 					Session::put('nama_admin',$datauser->username);
+					Session::put('user',$datauser->username);
+					Session::put('type',$datauser->type);
 					Session::put('loginadmin',TRUE);
+					Session::put('login',TRUE);
 					return redirect('admin')->with('alert-success','Selamat Datang '.$datauser->nama);
 				} else {
 					if(($datauser->type)==2) {
 						Session::put('nama_guru',$datauser->username);
+						Session::put('user',$datauser->username);
+						Session::put('type',$datauser->type);
 						Session::put('akses_siswa',$datauser->akses_siswa);
 						Session::put('loginguru', TRUE);
+						Session::put('login',TRUE);
 						return redirect('guru')->with('alert-success','Selamat Datang '.$datauser->nama);
 					}
 				}

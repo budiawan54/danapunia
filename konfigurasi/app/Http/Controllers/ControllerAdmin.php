@@ -110,11 +110,13 @@ class ControllerAdmin extends Controller
     }
 
     public function calendar(){
-        if (!session::get('loginadmin')) {
+        if (!session::get('login')){
             return redirect('login')->with('alert-error','Silakan login terlebih dahulu');
+        
         } else {
             $event = Event::all();
-            $user = ModelUser::where('username', Session::get('nama_admin'))->get();
+            $user = ModelUser::where('username', Session::get('user'))
+                ->get();
             return view('admin.kalender_kegiatan',compact('user','event'));
         }
     }

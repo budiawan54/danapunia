@@ -138,7 +138,6 @@
         </div>
       </div>
     </section>
-    @endsection
       <!-- /.row -->
   <!-- /.content-wrapper -->
         <!--Default modal-->
@@ -275,7 +274,7 @@
                       </div>
                       <!-- /.modal-dialog -->
                     </div> 
-
+@endsection
 
 
  
