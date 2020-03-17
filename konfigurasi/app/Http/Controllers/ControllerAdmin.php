@@ -7,6 +7,7 @@ use App\ModelPegawai;
 use App\ModelUser;
 use App\ModelEkskul;
 use App\ModelKegiatan;
+use App\ModelPelajaran;
 use App\Event;
 Use DataTables;
 Use App\ModelSiswa;
@@ -18,7 +19,19 @@ class ControllerAdmin extends Controller
 {
     //
 
+    public function pelajaran(){
+        if(!session::get('loginadmin')){
+            return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
+        } else {
+            $user = ModelUser::where('username', Session::get('user'))
+                ->get();
+            $jabatan = ModelPegawai::where('status','like','guru%')->get();
+            $pelajaran = ModelPelajaran::all();
+            return view('admin.pelajaran',compact('user','jabatan','pelajaran')) ;       
+        }
 
+
+    }
 
     public function dtpegawai(){
         $pegawai=DB::table('tb_pegawai')->join('tb_agama','tb_pegawai.agama','=','tb_agama.id_agama')->get();

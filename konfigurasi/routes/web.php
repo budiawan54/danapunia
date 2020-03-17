@@ -47,6 +47,7 @@ route::get('admin/extra/delete/{id}','ControllerAdmin@deleteEx');
 route::get('data_pegawai','ControllerAdmin@dtpegawai')->name('dtpegawai');
 route::post('admin/saveevent','ControllerAdmin@addevents')->name('storeevent');
 route::get('loadevent','ControllerAdmin@loadevents')->name('loadevent');
+route::get('admin/jadwal-pelajaran','ControllerAdmin@pelajaran')->name('jadwal-pelajaran');
 
 //ROUTE GURU
 Route::put('guru/siswa/update','ControllerGuru@stdupdate')->name('stdupdate');

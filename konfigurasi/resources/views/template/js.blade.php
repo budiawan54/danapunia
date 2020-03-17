@@ -167,43 +167,47 @@
       case '/admin/status':
       $('#li_stts').attr('class','active');
       $('title').text('Status');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
       break;
       case '/admin/profil':
       $('#li_prf').attr('class','active');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
       $('title').text('Profil');
       break;
       case '/admin/pegawai':
       $('#li_emplo').attr('class','active');
       $('title').text('Data Pegawai');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
       break;
       case '/admin/pengguna':
       $('#li_user').attr('class','active');
       $('title').text('Data Pengguna');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
       break;
       case '/admin/extra':
       $('#li_xtr').attr('class','active');
       $('title').text('Data Ekstra Kurikuler');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
       break;
       case '/admin/kegiatan':
       $('#li_kgt').attr('class','active');
       $('title').text('Data Kegiatan');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
       break;
       case '/admin/prestasi':
       $('#li_prt').attr('class','active');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
       $('title').text('Prestasi Siswa');
       break;
-      
+      case '/admin/jadwal-pelajaran':
+      $('#li_schedule').attr('class','active');
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
+      $('title').text('Jadwal Pelajaran');
+      break;
       case '/admin':
       $('#li_dsb').attr('class','active');
       $('title').text('Admin | Dashboard');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_pelajaran').remove();
       break;
       case '/guru':
       $('#li_dsb').attr('class','active');
