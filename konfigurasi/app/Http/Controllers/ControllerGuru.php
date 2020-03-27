@@ -90,7 +90,7 @@ class ControllerGuru extends Controller
     public function mpupdate($id, Request $request){
     	$pesan = [
 		'required' => 'Wajib diisi',
-		'unique' => 'Kode mata pelajaran sudah digunakan',
+		'unique' => 'kata kunci yang dimasukkan sudah digunakan',
 		'max' => 'Maksimal kode pelajaran adalah :max karakter',
 		];
 		$this->validate($request, [
@@ -99,15 +99,22 @@ class ControllerGuru extends Controller
 		],$pesan);
 
 		$kode=$request->kode_mp;
-		$pelajaran=ModelPelajaran::find($id);
+		$mapel = $request->nama_mp;
+		$pelajaran=ModelPelajaran::where('id_pelajaran',$id)->first();
 		if($kode!=$pelajaran->kode_pelajaran) {
 		$this->validate($request, [
 			'kode_mp' => 'unique:tb_pelajaran,kode_pelajaran|max:5',
 		],$pesan);
-		$pelajaran->kode_pelajaran=strtoupper($kode);
 		}
-		$pelajaran->nama_pelajaran=strtoupper($request->nama_mp);
-		$pelajaran->save();
+		if($mapel!=$pelajaran->nama_pelajaran){
+			$this->validate($request, [
+			'nama_mp' => 'unique:tb_pelajaran,nama_pelajaran',
+			],$pesan);
+		}
+		DB::table('tb_pelajaran')->where('id_pelajaran',$id)->update([
+		'kode_pelajaran' => strtoupper($request->kode_mp),
+		'nama_pelajaran' => strtoupper($request->nama_mp),	
+		]);
 		return back()->with('alert-success','Pelajaran berhasil diperbarui');
     }
 	public function mpdel($id) {
@@ -223,10 +230,10 @@ class ControllerGuru extends Controller
 	}
 
 	public function pelajaran(){
-		if(!session::get('loginguru')) {
+		if(!session::get('loginadmin')) {
 			return redirect ('login')->with('alert-error','Silakan login terlebih dahulu');
 		} else {
-			$user=ModelUser::where('username',session::get('nama_guru'))->get();
+			$user=ModelUser::where('username',session::get('nama_admin'))->get();
 			return view('guru.pelajaran',compact('user'));
 		}
 	}
@@ -234,7 +241,7 @@ class ControllerGuru extends Controller
 	public function fetcharraypelajaran(Request $request){
 
 			$id=$request->input('id');
-			$pelajaran=ModelPelajaran::find($id);
+			$pelajaran=ModelPelajaran::where('id_pelajaran',$id)->first();
 			echo json_encode($pelajaran);
 	}
 
@@ -242,9 +249,9 @@ class ControllerGuru extends Controller
 		return DataTables::of($pelajaran)
 				
 				->addColumn('action',function($pelajaran){
-					$button = '<a  name="edit" id="'.$pelajaran->id.'" class="btn-edit label label-warning"><i class="fa fa-edit"></i></a>';
+					$button = '<a  name="edit" id="'.$pelajaran->id_pelajaran.'" class="btn-edit label label-warning"><i class="fa fa-edit"></i></a>';
 					$button .='&nbsp';
-					$button .= '<a name="del" id="'.$pelajaran->id.'" class="btn-del label label-danger"><i class="fa fa-trash"></i></i></a>'; 
+					$button .= '<a name="del" id="'.$pelajaran->id_pelajaran.'" class="btn-del label label-danger"><i class="fa fa-trash"></i></i></a>'; 
 					return $button;
 				})
 				->rawColumns(['action'])

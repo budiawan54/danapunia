@@ -64,7 +64,7 @@
       if(session == 1){
       $('#li_cal').attr('class','active');
       $('title').text('Kalender Kegiatan');
-      $('#li_siswa, #li_nilai_siswa, #li_pelajaran, #li_schedule').remove();
+      $('#li_siswa, #li_nilai_siswa').remove();
       
 
     /* initialize the calendar
@@ -86,8 +86,6 @@
       //Random default events
       
       events    : '{{route('loadevent')}}',
-
-
       selectable : function(element){
         $('#edit').modal('show');
       },

@@ -48,6 +48,10 @@ route::get('data_pegawai','ControllerAdmin@dtpegawai')->name('dtpegawai');
 route::post('admin/saveevent','ControllerAdmin@addevents')->name('storeevent');
 route::get('loadevent','ControllerAdmin@loadevents')->name('loadevent');
 route::get('admin/jadwal-pelajaran','ControllerAdmin@pelajaran')->name('jadwal-pelajaran');
+route::get('jp','ControllerAdmin@dtjadwalpelajaran')->name('dtjp');
+route::get('dtjp','ControllerAdmin@loadjadwalpelajaran')->name('loaddtjp');
+
+
 
 //ROUTE GURU
 Route::put('guru/siswa/update','ControllerGuru@stdupdate')->name('stdupdate');
@@ -55,12 +59,12 @@ Route::get('guru/siswa/get','ControllerGuru@dtsiswa')->name('dtsiswa');
 Route::get('/guru','ControllerUser@guru')->name('dashboard-guru');
 Route::get('/guru/siswa','ControllerGuru@student')->name('siswa');
 Route::get('/guru/profil','ControllerUser@profil')->name('profil-guru');
-Route::get('/guru/pelajaran', 'ControllerGuru@pelajaran')->name('pelajaran');
+Route::get('/admin/pelajaran', 'ControllerGuru@pelajaran')->name('pelajaran');
 Route::post('guru/pelajaran/store','ControllerGuru@storemp');
 Route::post('guru/siswa/store','ControllerGuru@studentstore');
 Route::get('/guru/siswa/delete/{id}','ControllerGuru@stddel');
 Route::get('guru/pelajaran/{id}/delete/','ControllerGuru@mpdel');
-Route::post('guru/pelajaran/update/{id}','ControllerGuru@mpupdate');
+Route::post('admin/pelajaran/update/{id}','ControllerGuru@mpupdate');
 Route::get('guru/pelajaran/getid/{id}','ControllerGuru@getid');
 Route::get('guru/getpelajaran','ControllerGuru@json');
 Route::get('guru/test', 'ControllerGuru@fetcharraypelajaran');
@@ -79,6 +83,7 @@ Route::post('guru/simpan/nilai','ControllerNilai@storenilai');
 
 
 //Proses Controler
+Route::post('admin/jadwal-pelajaran/proses','ControllerAdmin@storejadwalpelajaran')->name('prosesjadwalpelajaran');
 Route::post('/daftar-online/prosesdaftar', 'ControllerUser@prosesdaftar');
 Route::post('/proseslogin','ControllerUser@proseslogin');
 Route::post('/admin/pengguna/prosespengguna','ControllerUser@prosespengguna');
@@ -95,3 +100,5 @@ Route::get('/admin/pegawai/{id}/hapus','ControllerAdmin@hapuspegawai');
 Route::get('/admin/pengguna/hapus/{id}','ControllerAdmin@hapuspengguna');
 Route::post('/admin/updateadmin/{id}','ControllerUser@userupdate');
 Route::post('/guru/updateguru/{id}','ControllerUser@userupdate');
+Route::put('/admin/jadwal-pelajaran/update/','ControllerAdmin@updatejadwalpelajaran')->name('updatejadwalpelajaran');
+route::get('admin/jadwal-pelajaran/{id}/delete','ControllerAdmin@deletejp');

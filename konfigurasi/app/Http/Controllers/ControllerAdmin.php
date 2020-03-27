@@ -8,16 +8,99 @@ use App\ModelUser;
 use App\ModelEkskul;
 use App\ModelKegiatan;
 use App\ModelPelajaran;
+use App\jadwalpelajaran;
 use App\Event;
 Use DataTables;
 Use App\ModelSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use File;
 use DB;
 class ControllerAdmin extends Controller
 {
     //
+    public function dtjadwalpelajaran(){
+        $jadwalpelajaran=DB::table('jadwalpelajaran')
+                        ->join('tb_pelajaran','jadwalpelajaran.matapelajaran','=','tb_pelajaran.id_pelajaran')
+                        
+                        ->join('days','jadwalpelajaran.hari','=','days.id_days')
+                        ->join('tb_class','tb_class.id_class','=','jadwalpelajaran.kelas')
+                        ->join('tb_pegawai','tb_pegawai.id_pegawai','=','jadwalpelajaran.namapengajar')
+
+                        ->get();
+        return DataTables::of($jadwalpelajaran)
+                
+                ->addColumn('action',function($jadwalpelajaran){
+                    $button = '<a  name="edit" id="'.$jadwalpelajaran->id.'" class="edit label label-warning"><i class="fa fa-edit"></i></a>';
+                    $button .='&nbsp';
+                    $button .= '<a name="del" id="'.$jadwalpelajaran->id.'" class="btn-del label label-danger"><i class="fa fa-trash"></i></i></a>'; 
+                    return $button;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+    }
+
+    public function storejadwalpelajaran(Request $request){
+        $pesan = ([
+            'required' => 'wajib diisi',
+        ]);
+        $this->validate($request, [
+        
+        'jampelajaran' => 'required',
+        'matapelajaran' => 'required',
+        'hari' => 'required',
+        'mulai_mp' =>"required",
+        'akhir_mp' =>'required',
+        'nama_pengajar' => 'required',
+        'color' => 'required',
+        'kelas' => 'required',
+        ],$pesan);
+
+      jadwalpelajaran::create([
+        'hari' => $request->hari,
+        'jampelajaran' => $request->jampelajaran,
+        'matapelajaran' => $request->matapelajaran,
+        'jammulai' => $request->mulai_mp,
+         
+        'jamselesai' => $request->akhir_mp,
+
+        'namapengajar' => $request->nama_pengajar,
+        'color' => $request->color,
+        'kelas' => $request->kelas,
+      ]);
+      return back()->with('alert-success','jadwal pelajaran berhasil ditambahkan');
+    }
+
+    public function updatejadwalpelajaran(Request $request){
+        $pesan = ([
+            'required' => 'wajib diisi',
+        ]);
+        $this->validate($request, [
+        
+        'jampelajaran' => 'required',
+        'matapelajaran' => 'required',
+        'hari' => 'required',
+        'mulai_mp' =>"required",
+        'akhir_mp' =>'required',
+        'nama_pengajar' => 'required',
+        'color' => 'required',
+        'kelas' => 'required',
+        ],$pesan);
+        $id = $request->id;
+        $jadwalpelajaran = jadwalpelajaran::find($id);
+        $jadwalpelajaran->hari = $request->hari;
+        $jadwalpelajaran->jampelajaran =$request->jampelajaran;
+        $jadwalpelajaran->matapelajaran =$request->matapelajaran;
+        $jadwalpelajaran->jammulai =$request->mulai_mp;
+        $jadwalpelajaran->jamselesai =$request->akhir_mp;
+        $jadwalpelajaran->namapengajar =$request->nama_pengajar;
+        $jadwalpelajaran->color =$request->color;
+        $jadwalpelajaran->kelas =$request->kelas;
+        $jadwalpelajaran->save();
+        return back()->with('alert-success','Jadwal Pelajaran berhasil diperbarui');
+    }
 
     public function pelajaran(){
         if(!session::get('loginadmin')){
@@ -37,9 +120,9 @@ class ControllerAdmin extends Controller
         $pegawai=DB::table('tb_pegawai')->join('tb_agama','tb_pegawai.agama','=','tb_agama.id_agama')->get();
         return DataTables::of($pegawai)
                 ->addColumn('action',function($pegawai){
-                    $button = '<a  name="edit" id="'.$pegawai->id.'" class="btn-edit label label-warning"><i class="fa fa-edit"></i></a>';
+                    $button = '<a  name="edit" id="'.$pegawai->id_pegawai.'" class="btn-edit label label-warning"><i class="fa fa-edit"></i></a>';
                     $button .='&nbsp';
-                    $button .= '<a name="del" id="'.$pegawai->id.'" class="btn-del label label-danger"><i class="fa fa-trash"></i></i></a>';
+                    $button .= '<a name="del" id="'.$pegawai->id_pegawai.'" class="btn-del label label-danger"><i class="fa fa-trash"></i></i></a>';
                     return $button;
                 })
                 ->rawColumns(['action'])
@@ -62,18 +145,11 @@ class ControllerAdmin extends Controller
 
     }
 
-    public function delete($id){
-        $kegiatan = ModelKegiatan::find($id);
-        File::delete('foto_kegiatan/'.$kegiatan->foto_kegiatan);
-        $kegiatan->delete();
-        return redirect('admin/kegiatan')->with('alert-success','Data Kegiatan berhasil dihapus');
-
-    }
+    
 
 
     public function dtkegiatan(){
         $kegiatan=ModelKegiatan::all();
-
         return DataTables::of($kegiatan)
                 
                 ->addColumn('action',function($kegiatan){
@@ -92,14 +168,32 @@ class ControllerAdmin extends Controller
     public function fetcharray(Request $request){
 
             $id=$request->input('id');
+
             $kegiatan=ModelKegiatan::find($id);
             $ekskul = ModelEkskul::find($id);
             $prestasi=ModelPrestasi::find($id);
-            $pegawai=ModelPegawai::find($id);
+            $pegawai=ModelPegawai::where('id_pegawai',$id)->first();
             $siswa = ModelSiswa::find($id);
-            $gabungan = array($kegiatan,$ekskul,$prestasi,$pegawai,$siswa);
+            $jadwalpelajaran = jadwalpelajaran::find($id);
+            $gabungan = array($kegiatan,$ekskul,$prestasi,$pegawai,$siswa,$jadwalpelajaran);
             echo json_encode($gabungan);
     }
+
+    public function delete($id){
+        $kegiatan = ModelKegiatan::find($id);
+        File::delete('foto_kegiatan/'.$kegiatan->foto_kegiatan);  
+        $kegiatan->delete();      
+        return redirect('admin/kegiatan')->with('alert-success','Data kegiatan berhasil dihapus');
+    }
+
+    public function deletejp($id){
+        $jadwalpelajaran = jadwalpelajaran::find($id); 
+        $jadwalpelajaran->delete();      
+        return redirect('admin/jadwal-pelajaran')->with('alert-success','Data jadwal pelajaran berhasil dihapus');
+    }
+
+
+
     public function dtekskul(){$ekskul=ModelEkskul::all();
         return DataTables::of($ekskul)
                 
@@ -244,15 +338,18 @@ class ControllerAdmin extends Controller
         return back()->with('alert-success','Data prestasi berhasil dihapus');
     }
     public function hapuspegawai($id) {
-        $hapuspegawai=ModelPegawai::find($id);
-        File::delete('/foto_pegawai/'.$hapuspegawai->foto_pegawai);
-        $hapuspegawai->delete();
+        
+        $pegawai = ModelPegawai::where('id_pegawai',$id)->first();
+        File::delete('foto_pegawai/'.$pegawai->foto_pegawai); 
+        $pegawai = DB::table('tb_pegawai')->where('id_pegawai','=',$id)->delete();
+       
+        
         return back()->with('alert-success','Data pegawai berhasil dihapus');
     }
 
     public function hapuspengguna($id) {
         $pengguna=ModelUser::find($id);
-        File::delete('/foto_profil/'.$pengguna->foto_profil);
+        File::delete('/foto_profil/'.$pengguna->foto_profil);
         $pengguna->delete();
         return back()->with('alert-success','Data pengguna berhasil dihapus');
     }
@@ -373,23 +470,24 @@ class ControllerAdmin extends Controller
         'jabatan'=> 'required',
     	'foto_pegawai' => 'image|max:2048|mimes:png,jpeg',
     	],$pesanerror);
-        
-
-    	$pegawai=ModelPegawai::find($id);
-    	$pegawai->nama_pegawai = $request->nama_pegawai;
-        $pegawai->alamat_pegawai = $request->alamat;
-        $pegawai->nik = $request->nik;
-        $pegawai->tanggal_lahir =date('Y-m-d',strtotime($request->tanggal_lahir));
-        $pegawai->agama= $request->agama;
-        $pegawai->status = $request->jabatan;
         if($request->has('foto_pegawai')) {
             $foto = $request->file('foto_pegawai');
             $fotopegawai =time().'-'.$foto->getClientOriginalName();
             $folder='foto_pegawai';
             $foto->move($folder,$fotopegawai);
-            $pegawai->foto_pegawai = $fotopegawai;
-            }
-        $pegawai->save();
+            DB::table('tb_pegawai')->where('id_pegawai',$id)->update([
+                'foto_pegawai'=>$fotopegawai,
+            ]);
+            }; 
+        DB::table('tb_pegawai')->where('id_pegawai',$id)->update([
+            'nama_pegawai' => $request->nama_pegawai,
+            'alamat_pegawai' => $request->alamat,
+            'nik' => $request->nik,
+            'tanggal_lahir'=>date('Y-m-d',strtotime($request->tanggal_lahir)),
+            'agama' =>$request->agama,
+            'status'=>$request->jabatan,          
+        ]);    
+
     	
     	return back()->with('alert-success','Data Pegawai berhasil diperbarui');
     }
@@ -444,8 +542,6 @@ class ControllerAdmin extends Controller
 
     public function loadevents(){
         $event=Event::all();
-       //return view('admin.kalender_kegiatan',compact('event'));
-
         foreach ($event as $e){
             $data[] = array(
                 'id' => $e['id'],
@@ -457,8 +553,24 @@ class ControllerAdmin extends Controller
             );
         }
         echo json_encode($data);
-
     }
 
+    public function loadjadwalpelajaran(){
+        $jadwalpelajaran=jadwalpelajaran::all();
+        foreach ($jadwalpelajaran as $jp) {
+            $start = date('H:i',strtotime($jp['jammulai']));
+            $end = date('H:i',strtotime($jp['jamselesai']));
+            $data[] = array(
+                'id' => $jp['id'],
+                'title' =>$jp->mapel['nama_pelajaran'],
+                'start' =>str_replace('H:i','',$start),
+                'end' => str_replace('H:i','',$end),
+                'dow' => str_replace('00', '',$jp['hari']),
+                'backgroundColor' => $jp['color'],
+                'borderColor' => $jp['color'],
+            );
+        }
+        echo json_encode($data);
+    }
 
 }

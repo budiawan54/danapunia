@@ -213,7 +213,7 @@
                               <label for="inputEmail3" class="col-sm-2 control-label">Tanggal Lahir</label>
 
                               <div class="col-sm-10">
-                                <input type="text" class="form-control" id="datepicker"  name="tanggal_lahir" >                                            
+                                <input type="date" class="form-control" id="tanggal_lahir"  name="tanggal_lahir" >                                            
                               </div>
                             </div>
                             <div class="form-group">

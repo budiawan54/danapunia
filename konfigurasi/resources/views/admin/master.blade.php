@@ -25,7 +25,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini" >
+<body class="hold-transition skin-blue-light sidebar-mini" >
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -94,14 +94,13 @@ desired effect
         <li id="li_kgt"><a href="{{route('kegiatan')}}"><i class="fa fa-newspaper-o"></i><span>Data Kegiatan</span></a></li>
         <li id="li_xtr"><a href="{{route('extra')}}"><i class="fa fa-futbol-o"></i><span>Data Ekstra Kurikuler</span></a></li>
         <li id="li_prt"><a href="{{route('prestasi')}}"><i class="fa fa-gift"></i><span>Data Prestasi Siswa</span></a></li>
-        <li id="li_user"><a href="{{route('pengguna')}}"><i class="fa fa-users"></i><span>Data Pengguna</span></a></li>
-        <li id="li_emplo"><a href="{{route('pegawai')}}"><i class="fa fa-github"></i><span>Data Pegawai</span></a></li>
         <li id="li_pelajaran"><a href="{{route('pelajaran')}}"><i class="fa fa-book"></i> <span>Tambah Mata Pelajaran</span></a></li>
         <li id="li_siswa"><a href="{{route('siswa')}}"><i class="fa fa-user"></i> <span>Data Siswa</span></a></li>
         <li id="li_nilai_siswa"><a href="{{route('nilai_siswa')}}"><i class="fa fa-edit"></i> <span>Edit Nilai Siswa</span></a></li>
-        <li id="li_prf"><a href="{{route('profil')}}"><i class="fa fa-edit"></i><span>Ubah Profil</span></a></li>
-        <li id="li_cal"><a href="{{route('kalender')}}"><i class="fa fa-calendar"></i><span>Kalender Acara</span></a></li>
         <li id="li_schedule"><a href="{{route('jadwal-pelajaran')}}"><i class="fa fa-book"></i><span>Jadwal Pelajaran</span></a></li>
+        <li id="li_cal"><a href="{{route('kalender')}}"><i class="fa fa-calendar"></i><span>Kalender Acara</span></a></li>
+        <li id="li_user"><a href="{{route('pengguna')}}"><i class="fa fa-users"></i><span>Data Pengguna</span></a></li>
+        <li id="li_emplo"><a href="{{route('pegawai')}}"><i class="fa fa-github"></i><span>Data Pegawai</span></a></li>
         <li><a href="/logout"><i class="fa fa-sign-out"></i><span>Keluar</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
