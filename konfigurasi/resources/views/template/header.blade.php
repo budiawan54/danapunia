@@ -29,6 +29,8 @@
   <!-- Bootstrap Color Picker -->
   <link rel="stylesheet" href="{{asset('bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')}}">
   <link rel="stylesheet" href="{{asset('bower_components/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}">
+  <!-- Pace style -->
+  <link rel="stylesheet" href="{{asset('plugins/pace/pace.min.css')}}">
 
 
 

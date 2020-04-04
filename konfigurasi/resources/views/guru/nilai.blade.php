@@ -9,8 +9,8 @@
         <small>Preview nilai</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Widgets</li>
+        <li><a href="{{route('dashboard-guru')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Nilai</li>
       </ol>
     </section>
 @endsection
@@ -32,12 +32,13 @@
               <h5 class="widget-user-desc">Kelas {{$siswa->kelas}}</h5>
             </div>
             <div class="box-footer no-padding">
-              <ul class="nav nav-stacked">
-                <li><a href="#">Jumlah Tugas <span class="pull-right badge bg-blue">31</span></a></li>
+              <ul class="nav nav-stacked">@foreach ($pelajaran as $p)
+                <li><a href="#">Jumlah Tugas <span class="pull-right badge bg-blue">{{$p->jumlah_tugas}}</span></a></li>
                 <li><a href="#">Ulangan <span class="pull-right badge bg-aqua">5</span></a></li>
                 <li><a href="#">Tugas Selesai <span class="pull-right badge bg-green">12</span></a></li>
                 <li><a href="#">Tugas Belum Selesai <span class="pull-right badge bg-red">842</span></a></li>
                 <li><a href="#" id="username" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">superuser</a></li>
+                @endforeach
               </ul>
             </div>
           </div>
@@ -51,19 +52,22 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="tabel_nilai_siswa" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                  <th>No</th>
                   <th>Kode Pelajaran</th>
                   <th>Nama Pelajaran</th>
                   <th>Nilai Ulangan Umum</th>
                   <th>Nilai Ulangan Harian 1</th>
                   <th>Nilai Ulangan Harian 2</th>
+                  <th>Nilai Ulangan Harian 3</th>
+                  <th>Aksi</th>
                 </tr>
                 </thead>
                 <tfoot>
                   <tr>
-                    <th colspan="2"></th>
+                    <th colspan="3"></th>
                     <th id="rerata_ulu"></th>
                     <th id="rerata_ulh1"></th>
                     <th id="rerata_ulh2"></th>
@@ -158,17 +162,23 @@
 <script type="text/javascript">
 
 	$(function(){
+    $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
+    $('#li_schedule').find('span').text('Jadwal Mengajar');
+    $('#li_schedule').find('a').attr('href','{{route('jm-guru')}}');
     var id = $('#nomor_id').text();
-		$('#example1').DataTable({
+		$('#tabel_nilai_siswa').DataTable({
       processing:true,
       serverSide:true,
       ajax : '/guru/nilai/get/'+id,
       columns:[
-        {data:'kode_mp',name:'kode_mp'},
-        {data:'nama_pelajaran'},
-        {data:'ulangan_umum_1'},
-        {data:'ulangan_harian_1'},
-        {data:'ulangan_harian_2'},
+        {data:'DT_RowIndex',name:'DT_RowIndex'},
+        {data:'kode_pelajaran',name:'kode_pelajaran'},
+        {data:'nama_pelajaran',name:'nama_pelajaran'},
+        {data:'ulangan_umum_1',name:'ulangan_umum_1'},
+        {data:'ulangan_harian_1',name:'ulangan_harian_1'},
+        {data:'ulangan_harian_2',name:'ulangan_harian_2'},
+        {data:'ulangan_harian_3',name:'ulangan_harian_3'},
+        {data:'action',name:'action'},
       ],
       "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -183,21 +193,21 @@
  
             // computing column Total of the complete result 
             var uluTotal = api
-                .column( 2 )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
-
-            var ulh1Total = api
                 .column( 3 )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
-            var ulh2Total = api
+            var ulh1Total = api
                 .column( 4 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            var ulh2Total = api
+                .column( 5 )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -205,9 +215,9 @@
 
                 //footer
                 $( api.column( 0 ).footer()).html('Rata-rata');
-                $(api.column(2).footer()).html((uluTotal/data.length).toFixed(2));
-                $(api.column(3).footer()).html((ulh1Total/data.length).toFixed(2));
-                $(api.column(4).footer()).html((ulh2Total/data.length).toFixed(2));
+                $(api.column(3).footer()).html((uluTotal/data.length).toFixed(2));
+                $(api.column(4).footer()).html((ulh1Total/data.length).toFixed(2));
+                $(api.column(5).footer()).html((ulh2Total/data.length).toFixed(2));
               },
             })
           })
@@ -255,6 +265,7 @@ $(function(){
       url:url,
       method: 'POST',
       data: $(this).serialize(),
+      headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"}, 
       beforeSend:function(){
         $('p').remove();
         $('input').val('');
@@ -262,7 +273,7 @@ $(function(){
       success:function(data){
       alert('Nilai berhasil ditambahkan');
       $('.modal').modal('hide');
-      $('#example1').DataTable().ajax.reload();
+      $('#tabel_nilai_siswa').DataTable().ajax.reload();
       },
       error: function(xhr){
         let response = xhr.responseJSON
@@ -284,4 +295,5 @@ $(function(){
 })
 
 </script>
+@include('template.modal')
 @endsection

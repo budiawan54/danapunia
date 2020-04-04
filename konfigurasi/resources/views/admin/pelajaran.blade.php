@@ -9,9 +9,6 @@
         <li class="active"><i class="fa fa-calendar"></i>Jadwal Pelajaran</li>
       </ol>
     </section>
-
-
-
 <section class="content">
 	@if (Session::has('alert-success'))
     <div class="container alert alert-success"><h4><center><i class="fa fa-lg fa-check"></i> {{Session::get('alert-success')}}</center></h4>
@@ -273,13 +270,12 @@ $(document).on('click','.edit',function(){
       $('#matapelajaran option[value='+data[5].matapelajaran+']').attr('selected','selected')
       $('#color option[value="'+data[5].color+'"]').attr('selected','selected')
       $('#input_jadwal_pelajaran').attr('action','{{route('updatejadwalpelajaran')}}');
-      
-
       let put = $('{{method_field('PUT')}}');
       $('#id').before(put);
     }
   })
 })
+var session = '{{Session::get('type')}}';
 </script>
 @include('template.modal')
 @endsection

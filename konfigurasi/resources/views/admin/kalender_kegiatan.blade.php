@@ -86,6 +86,15 @@
       //Random default events
       
       events    : '{{route('loadevent')}}',
+      eventRender: function(eventObj, $el) {
+       $el.popover({
+        title: eventObj.title,
+        content: eventObj.description,
+        trigger: 'hover',
+        placement: 'top',
+        container: 'body'
+       });
+      },
       selectable : function(element){
         $('#edit').modal('show');
       },
@@ -192,9 +201,10 @@
       $('#ln-dsb').attr('href','{{route('dashboard-guru')}}');
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Guru | Dashboard');
-      $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt').remove();
-      $('#li_schedule').attr('href','{{route('schedule')}}');
+      $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
       $('title').text('Kalender Kegiatan');
+      $('#li_schedule').find('a').attr('href','{{route('jm-guru')}}');
+      $('#li_schedule').find('span').text('Jadwal Mengajar');
       $('#row_add_event').addClass('hidden');
 
       $('#calendar').fullCalendar({
@@ -212,7 +222,16 @@
       },
       //Random default events
       
-      events    : '{{route('loadevent')}}'
+      events    : '{{route('loadevent')}}',
+      eventRender: function(eventObj, $el) {
+       $el.popover({
+        title: eventObj.title,
+        content: eventObj.description,
+        trigger: 'hover',
+        placement: 'top',
+        container: 'body'
+       });
+      }
     })
       } 
     

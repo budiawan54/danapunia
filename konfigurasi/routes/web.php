@@ -48,6 +48,8 @@ route::get('data_pegawai','ControllerAdmin@dtpegawai')->name('dtpegawai');
 route::post('admin/saveevent','ControllerAdmin@addevents')->name('storeevent');
 route::get('loadevent','ControllerAdmin@loadevents')->name('loadevent');
 route::get('admin/jadwal-pelajaran','ControllerAdmin@pelajaran')->name('jadwal-pelajaran');
+route::get('guru/jadwal-mengajar','ControllerAdmin@pelajaran')->name('jm-guru');
+route::get('dtjm','ControllerAdmin@dtjadwalmengajar')->name('dtjm');
 route::get('jp','ControllerAdmin@dtjadwalpelajaran')->name('dtjp');
 route::get('dtjp','ControllerAdmin@loadjadwalpelajaran')->name('loaddtjp');
 

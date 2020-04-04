@@ -81,10 +81,12 @@ class ControllerGuru extends Controller
     		return redirect ('login')->with('alert-error','Silakan masuk terlebih dahulu');
     	} else {
     		$siswa=ModelSiswa::find($id);
-    		//$pelajaran = ModelNilai::all();
+    		$pelajaran = ModelNilai::
+    		where('id_siswa',$id)->get();
     		$kode_mp=ModelPelajaran::all();
     		$user=ModelUser::where('username',session::get('nama_guru'))->get();
     		return view('guru.nilai',compact('siswa','pelajaran','kode_mp','user'));
+    		
     	}
     }
     public function mpupdate($id, Request $request){

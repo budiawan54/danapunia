@@ -23,8 +23,12 @@
 <!-- bootstrap color picker -->
 <script src="{{asset('bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')}}"></script>
 <script src="{{asset('bower_components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
+<!-- PACE -->
+<script src="{{asset('bower_components/PACE/pace.min.js')}}"></script>
 <script type="text/javascript">
-
+  $(document).ajaxStart(function() {
+            Pace.restart()
+        })
   //DATATABLES 
   $(function () {
     $('#datetimepicker1 ').datetimepicker({
@@ -82,7 +86,21 @@
         {data:'action',name:'action'},
       ]
     });
+    $('#table_jadwal_mengajar').DataTable({
+      serverSide: true,
+      processing: true,
+      ajax: '{{route('dtjm')}}',
+      columns:[
+        {data:'DT_RowIndex', name:'DT_RowIndex'},
+        {data:'days_name',name:'days_name'},
+        {data:'nama_kelas',name:'nama_kelas'},
+        {data:'jampelajaran', name:'jampelajaran'},
+        {data:'nama_pelajaran',name:'nama_pelajaran'},
+        {data:'jammulai', name: 'jammulai'},
+        {data:'jamselesai', name: 'jamselesai'},
 
+      ]
+    });
     $('#table_prestasi').DataTable({
       processing : true,
       serverSide : true,
@@ -101,10 +119,7 @@
         {data:'action', name:'action', orderable:false },
       ]
     });
-
-
     });      
-
   $(function () {
     $('#example1').DataTable({
       processing : true,
@@ -256,6 +271,8 @@
       $('title').text('Guru | Dashboard');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
       $('#li_schedule').attr('href','{{route('schedule')}}');
+      $('#li_schedule').find('span').text('Jadwal Mengajar');
+      $('#li_schedule').find('a').attr('href','{{route('jm-guru')}}');
       break;
 
       case '/userbaru':
@@ -271,6 +288,8 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Tambah Siswa');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
+      $('#li_schedule').find('span').text('Jadwal Mengajar');
+      $('#li_schedule').find('a').attr('href','{{route('jm-guru')}}');
       break;
       case '/guru/nilai':
       $('#li_nilai_siswa').attr('class','active');
@@ -278,6 +297,17 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Silakan Masukkan Siswa Terlebih Dahulu');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
+      $('#li_schedule').find('span').text('Jadwal Mengajar');
+      $('#li_schedule').find('a').attr('href','{{route('jm-guru')}}');
+      break;
+      case '/guru/jadwal-mengajar':
+      $('#li_pelajaran').attr('class','active');
+      $('#ln-dsb').attr('href','{{route('dashboard-guru')}}');
+      $('#foto_profil').attr('href','{{route('profil-guru')}}');      
+      $('title').text('Jadwal Mengajar');
+      $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
+      $('#li_schedule').find('span').text('Jadwal Mengajar');
+      $('#li_schedule').find('a').attr('href','{{route('jm-guru')}}');
       break;
       case '/guru/schedule':
       $('#li_cal').attr('class','active');
@@ -285,12 +315,16 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Silakan Masukkan Siswa Terlebih Dahulu');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
+      $('#li_schedule').find('span').text('Jadwal Mengajar');
+      $('#li_schedule').find('a').attr('href','{{route('jm-guru')}}');
       break;
       case '/guru/profil':
       $('#ln-dsb').attr('href','{{route('dashboard-guru')}}');
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Profil');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
+      $('#li_schedule').find('span').text('Jadwal Mengajar');
+      $('#li_schedule').find('a').attr('href','{{route('jm-guru')}}');
       break;
     }
     var judul = $('title').text();

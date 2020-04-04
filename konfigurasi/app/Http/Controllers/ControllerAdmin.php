@@ -20,14 +20,23 @@ use DB;
 class ControllerAdmin extends Controller
 {
     //
+    public function dtjadwalmengajar(){
+        $jadwalmengajar= DB::table('jadwalpelajaran')
+             ->join('tb_pelajaran','jadwalpelajaran.matapelajaran','=','tb_pelajaran.id_pelajaran')
+             ->join('days','jadwalpelajaran.hari','=','days.id_days')
+             ->join('tb_class','tb_class.id_class','=','jadwalpelajaran.kelas')
+             ->where('kelas',Session::get('akses_siswa')) 
+             ->get();
+        return DataTables::of($jadwalmengajar)
+                ->addIndexColumn()
+                ->make(true);
+    }
     public function dtjadwalpelajaran(){
         $jadwalpelajaran=DB::table('jadwalpelajaran')
-                        ->join('tb_pelajaran','jadwalpelajaran.matapelajaran','=','tb_pelajaran.id_pelajaran')
-                        
+                        ->join('tb_pelajaran','jadwalpelajaran.matapelajaran','=','tb_pelajaran.id_pelajaran') 
                         ->join('days','jadwalpelajaran.hari','=','days.id_days')
                         ->join('tb_class','tb_class.id_class','=','jadwalpelajaran.kelas')
                         ->join('tb_pegawai','tb_pegawai.id_pegawai','=','jadwalpelajaran.namapengajar')
-
                         ->get();
         return DataTables::of($jadwalpelajaran)
                 
@@ -103,8 +112,13 @@ class ControllerAdmin extends Controller
     }
 
     public function pelajaran(){
-        if(!session::get('loginadmin')){
+        if(!session::get('login')){
             return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
+        }if (session::get('loginguru')) {
+            $user = ModelUser::where('username', Session::get('user'))
+                ->get();
+            $pelajaran = ModelPelajaran::all();
+            return view('guru.jadwal-mengajar',compact('user','pelajaran')) ; 
         } else {
             $user = ModelUser::where('username', Session::get('user'))
                 ->get();
