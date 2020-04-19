@@ -11,10 +11,18 @@ class ModelNilai extends Model
     protected $fillable = [
     	'id_siswa',
     	'kode_mp',
-    	'ulangan_umum_1',
+        'uts',
+    	'ulangan_umum',
     	'ulangan_harian_1',
     	'ulangan_harian_2',
         'ulangan_harian_3',
+        'ulangan_harian_4',
+        'ulangan_harian_5',
+        'ulangan_harian_6',
+        'ulangan_harian_7',
+        'ulangan_harian_8',
+        'ulangan_harian_9',
+        'ulangan_harian_10',
     ];
 
     public function siswa(){

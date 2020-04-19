@@ -25,6 +25,8 @@
 <script src="{{asset('bower_components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
 <!-- PACE -->
 <script src="{{asset('bower_components/PACE/pace.min.js')}}"></script>
+<script src="{{asset('bower_components/bootstrap-editable/js/bootstrap-editable.js')}}"></script>
+
 <script type="text/javascript">
   $(document).ajaxStart(function() {
             Pace.restart()
@@ -340,6 +342,7 @@
       autoclose: true,
       format: 'dd-mm-yyyy'
     })
+    
     $(function () {
     $('#example1').DataTable()
     $('#example2').DataTable({
@@ -813,4 +816,32 @@ function lihatjadwal(){
     }));
     return lihatjadwal();
 }
+$.fn.editable.defaults.mode = 'inline';
+$(function(){
+  var id = $('.nilai_tugas').attr('id');
+  $.ajaxSetup({
+                headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"}
+            });
+  $('.badge').editable({
+    ajaxOptions: {
+      type : 'put'
+    },
+    success : function(){
+      alert('data berhasil diperbarui')
+      $.ajax({
+        url:'{{route('json')}}',
+          method:'get',
+          data:{id:id},
+          dataType:'json',
+            success:function(data){
+            $('span#tugas_belum_selesai').text(data[4].jumlah_tugas - data[4].tugas_selesai)
+            }
+      })
+    },
+   
+  });
+  
+})
+
+
 </script>

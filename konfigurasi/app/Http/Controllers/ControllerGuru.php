@@ -81,11 +81,38 @@ class ControllerGuru extends Controller
     		return redirect ('login')->with('alert-error','Silakan masuk terlebih dahulu');
     	} else {
     		$siswa=ModelSiswa::find($id);
-    		$pelajaran = ModelNilai::
-    		where('id_siswa',$id)->get();
+    		$pelajaran = ModelNilai::where('id_siswa',$id)->get();
     		$kode_mp=ModelPelajaran::all();
     		$user=ModelUser::where('username',session::get('nama_guru'))->get();
-    		return view('guru.nilai',compact('siswa','pelajaran','kode_mp','user'));
+    		$categories = [];
+    		for ($i=1 ; $i<=12 ; $i++){
+    			$data[$i] = [];
+    			$nama[$i]= ['ulangan harian '.$i];
+    			$nama['11'] = ['UTS'];
+    			$nama['12'] = ['ulangan umum'];
+    		}
+    		foreach ($kode_mp as $mp){
+    			if ($pelajaran->where('kode_mp',$mp->nama_pelajaran)
+    				->first()){
+    				$categories[] = $mp->nama_pelajaran;
+    				for ($i=1 ; $i<=10 ; $i++){
+    				$name = 'ulangan_harian_$i';
+	    			$data[$i][] = $pelajaran->where('kode_mp',$mp->nama_pelajaran)
+	    			->first()->{'ulangan_harian_'.$i};
+    				}
+    				$data[11][] =$pelajaran->where('kode_mp',$mp->nama_pelajaran)
+	    			->first()->uts;
+	    			$data[12][] =$pelajaran->where('kode_mp',$mp->nama_pelajaran)
+	    			->first()->ulangan_umum;
+    			}   			
+    		}
+    		
+    		
+
+    		//dd($pelajaran->where('id_siswa',$id)->first()->kode_mp);
+    		//dd($a);
+    		//dd(json_encode($categories));
+    		return view('guru.nilai',compact('siswa','pelajaran','kode_mp','user','categories','data','nama'));
     		
     	}
     }

@@ -81,10 +81,13 @@ Route::post('guru/delevents','ControllerAdmin@delevents')->name('delevents');
 Route::get('guru/nilai/get/{id}','ControllerNilai@json');
 Route::get('guru/nilai/get','ControllerNilai@fetcharraypelajaran');
 Route::post('guru/simpan/nilai','ControllerNilai@storenilai');
+Route::post('/guru/nilai/','ControllerNilai@fetch')->name('getnilai');
 
 
 
 //Proses Controler
+Route::put('/guru/nilai/update/jmltgs/{id}','ControllerNilai@upjmltgs');
+Route::put('/guru/nilai/update/','ControllerNilai@updatenilai')->name('updatenilai');
 Route::post('admin/jadwal-pelajaran/proses','ControllerAdmin@storejadwalpelajaran')->name('prosesjadwalpelajaran');
 Route::post('/daftar-online/prosesdaftar', 'ControllerUser@prosesdaftar');
 Route::post('/proseslogin','ControllerUser@proseslogin');
@@ -104,3 +107,5 @@ Route::post('/admin/updateadmin/{id}','ControllerUser@userupdate');
 Route::post('/guru/updateguru/{id}','ControllerUser@userupdate');
 Route::put('/admin/jadwal-pelajaran/update/','ControllerAdmin@updatejadwalpelajaran')->name('updatejadwalpelajaran');
 route::get('admin/jadwal-pelajaran/{id}/delete','ControllerAdmin@deletejp');
+route::get('/fetchnilai/{id}','ControllerNilai@fetch');
+route::put('/guru/nilai/hapus','ControllerNilai@delete')->name('deletenilai');

@@ -31,6 +31,7 @@
   <link rel="stylesheet" href="{{asset('bower_components/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}">
   <!-- Pace style -->
   <link rel="stylesheet" href="{{asset('plugins/pace/pace.min.css')}}">
+  <link href="{{asset('bower_components/bootstrap-editable/css/bootstrap-editable.css')}}" rel="stylesheet">
 
 
 

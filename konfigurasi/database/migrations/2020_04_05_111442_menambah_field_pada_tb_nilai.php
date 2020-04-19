@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFieldToTbNilai extends Migration
+class MenambahFieldPadaTbNilai extends Migration
 {
     /**
      * Run the migrations.
@@ -15,10 +15,11 @@ class AddFieldToTbNilai extends Migration
     {
         if (Schema::hasTable('tb_nilai')){
             Schema::table('tb_nilai', function (Blueprint $table) {
-            $table->integer('jumlah_tugas')->unsigned()->after('id_siswa');
+            $table->integer('jumlah_ulangan')->unsigned()->after('id_siswa');
+            $table->integer('tugas_selesai')->unsigned()->after('id_siswa');
+            $table->integer('tugas_belum_selesai')->unsigned()->after('id_siswa');
         });
         }
-        
     }
 
     /**

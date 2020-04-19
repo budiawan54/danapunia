@@ -10,6 +10,7 @@ use App\ModelKegiatan;
 use App\ModelPelajaran;
 use App\jadwalpelajaran;
 use App\Event;
+use App\ModelNilai;
 Use DataTables;
 Use App\ModelSiswa;
 use Illuminate\Http\Request;
@@ -182,14 +183,14 @@ class ControllerAdmin extends Controller
     public function fetcharray(Request $request){
 
             $id=$request->input('id');
-
             $kegiatan=ModelKegiatan::find($id);
             $ekskul = ModelEkskul::find($id);
             $prestasi=ModelPrestasi::find($id);
             $pegawai=ModelPegawai::where('id_pegawai',$id)->first();
             $siswa = ModelSiswa::find($id);
             $jadwalpelajaran = jadwalpelajaran::find($id);
-            $gabungan = array($kegiatan,$ekskul,$prestasi,$pegawai,$siswa,$jadwalpelajaran);
+            $nilai = ModelNilai::find($id);
+            $gabungan = array($kegiatan,$ekskul,$prestasi,$pegawai,$siswa,$jadwalpelajaran,$nilai);
             echo json_encode($gabungan);
     }
 
