@@ -223,8 +223,6 @@ $(function(){
             }
       })
     $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
-    $('#li_schedule').find('span').text('Jadwal Mengajar');
-    $('#li_schedule').find('a').attr('href','{{route('jm-guru')}}');
 		$('#tabel_nilai_siswa').DataTable({
       processing:true,
       serverSide:true,

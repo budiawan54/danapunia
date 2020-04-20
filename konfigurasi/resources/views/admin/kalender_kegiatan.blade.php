@@ -182,14 +182,10 @@
     var id = $('#id').val()
     $.ajax({
        url:"{{route('delevents')}}",
-
        type:"POST",
-
        data:{id:id},
        headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"}, 
-
        success:function(){
-
         $('#calendar').fullCalendar('refetchEvents');
         $('#edit-event').modal('hide')
         alert("Events berhasil dihapus");
@@ -203,8 +199,6 @@
       $('title').text('Guru | Dashboard');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
       $('title').text('Kalender Kegiatan');
-      $('#li_schedule').find('a').attr('href','{{route('jm-guru')}}');
-      $('#li_schedule').find('span').text('Jadwal Mengajar');
       $('#row_add_event').addClass('hidden');
 
       $('#calendar').fullCalendar({

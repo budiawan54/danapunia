@@ -37,7 +37,8 @@ class ControllerAdmin extends Controller
                         ->join('tb_pelajaran','jadwalpelajaran.matapelajaran','=','tb_pelajaran.id_pelajaran') 
                         ->join('days','jadwalpelajaran.hari','=','days.id_days')
                         ->join('tb_class','tb_class.id_class','=','jadwalpelajaran.kelas')
-                        ->join('tb_pegawai','tb_pegawai.id_pegawai','=','jadwalpelajaran.namapengajar')
+                       
+                        ->where('jadwalpelajaran.kelas',session::get('akses_siswa')) 
                         ->get();
         return DataTables::of($jadwalpelajaran)
                 
@@ -63,9 +64,9 @@ class ControllerAdmin extends Controller
         'hari' => 'required',
         'mulai_mp' =>"required",
         'akhir_mp' =>'required',
-        'nama_pengajar' => 'required',
-        'color' => 'required',
-        'kelas' => 'required',
+        //'nama_pengajar' => 'required',
+        //'color' => 'required',
+        //'kelas' => 'required',
         ],$pesan);
 
       jadwalpelajaran::create([
@@ -78,7 +79,7 @@ class ControllerAdmin extends Controller
 
         'namapengajar' => $request->nama_pengajar,
         'color' => $request->color,
-        'kelas' => $request->kelas,
+        'kelas' => session::get('akses_siswa'),
       ]);
       return back()->with('alert-success','jadwal pelajaran berhasil ditambahkan');
     }
@@ -94,9 +95,9 @@ class ControllerAdmin extends Controller
         'hari' => 'required',
         'mulai_mp' =>"required",
         'akhir_mp' =>'required',
-        'nama_pengajar' => 'required',
-        'color' => 'required',
-        'kelas' => 'required',
+        //'nama_pengajar' => 'required',
+        //'color' => 'required',
+        //'kelas' => 'required',
         ],$pesan);
         $id = $request->id;
         $jadwalpelajaran = jadwalpelajaran::find($id);
@@ -107,7 +108,7 @@ class ControllerAdmin extends Controller
         $jadwalpelajaran->jamselesai =$request->akhir_mp;
         $jadwalpelajaran->namapengajar =$request->nama_pengajar;
         $jadwalpelajaran->color =$request->color;
-        $jadwalpelajaran->kelas =$request->kelas;
+        $jadwalpelajaran->kelas =session::get('akses_siswa');
         $jadwalpelajaran->save();
         return back()->with('alert-success','Jadwal Pelajaran berhasil diperbarui');
     }
@@ -119,7 +120,8 @@ class ControllerAdmin extends Controller
             $user = ModelUser::where('username', Session::get('user'))
                 ->get();
             $pelajaran = ModelPelajaran::all();
-            return view('guru.jadwal-mengajar',compact('user','pelajaran')) ; 
+            $jabatan = ModelPegawai::where('status','like','guru%')->get();
+            return view('guru.pelajaran',compact('user','pelajaran','jabatan')) ; 
         } else {
             $user = ModelUser::where('username', Session::get('user'))
                 ->get();
@@ -570,13 +572,13 @@ class ControllerAdmin extends Controller
         echo json_encode($data);
     }
 
-    public function loadjadwalpelajaran(){
+   /* public function loadjadwalpelajaran(){
         $jadwalpelajaran=jadwalpelajaran::all();
         foreach ($jadwalpelajaran as $jp) {
             $start = date('H:i',strtotime($jp['jammulai']));
             $end = date('H:i',strtotime($jp['jamselesai']));
             $data[] = array(
-                'id' => $jp['id'],
+                'id' => $jp['id_pelajaran'],
                 'title' =>$jp->mapel['nama_pelajaran'],
                 'start' =>str_replace('H:i','',$start),
                 'end' => str_replace('H:i','',$end),
@@ -586,6 +588,6 @@ class ControllerAdmin extends Controller
             );
         }
         echo json_encode($data);
-    }
+    }*/
 
 }
