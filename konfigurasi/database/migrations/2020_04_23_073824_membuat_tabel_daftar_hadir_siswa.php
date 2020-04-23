@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class MembuatMigrasiKetAbsensi extends Migration
+class MembuatTabelDaftarHadirSiswa extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class MembuatMigrasiKetAbsensi extends Migration
      */
     public function up()
     {
-        Schema::create('ket_absensi', function (Blueprint $table) {
+        Schema::create('absensi_siswa', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nama_keterangan');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ class MembuatMigrasiKetAbsensi extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ket_absensi');
+        Schema::dropIfExists('absensi_siswa');
     }
 }
