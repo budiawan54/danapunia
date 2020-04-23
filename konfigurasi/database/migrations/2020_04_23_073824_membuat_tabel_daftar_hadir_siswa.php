@@ -15,6 +15,9 @@ class MembuatTabelDaftarHadirSiswa extends Migration
     {
         Schema::create('absensi_siswa', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('id_siswa')->unsigned();
+            $table->date('tanggal');
+            $table->string('ket_absensi');
             $table->timestamps();
         });
     }
