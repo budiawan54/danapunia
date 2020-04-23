@@ -13,6 +13,46 @@ use DB;
 class ControllerGuru extends Controller
 {
 	//
+	function dtabsensi(){
+		$absensi = DB::table('absensi_siswa')
+			->join('ket_absensi','ket_absensi.id_absensi','=','absensi_siswa.ket_absensi')
+			->join('tb_siswa','tb_siswa.id','=','absensi_siswa.id_siswa')
+			->where('tb_siswa.kelas',session::get('akses_siswa'))
+			->get();
+			return DataTables::of($absensi)
+                ->addColumn('action',function($absensi){
+                    $button = '<a  name="edit" id="'.$absensi->id.'" class="btn-edit label label-warning"><i class="fa fa-edit"></i></a>';
+                    $button .='&nbsp';
+                    $button .= '<a name="del" id="'.$absensi->id.'" class="btn-del label label-danger"><i class="fa fa-trash"></i></i></a>';
+                    return $button;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+	}
+
+	function storeabs(Request $request){
+		$pesan = [
+			'required' => 'wajib diisi !'
+		];
+
+		$this->validate($request,[
+			'tanggal' => 'required',
+			'nama_siswa' => 'required',
+			'ket_absensi' => 'required',
+		],$pesan);
+		$arr = $request->nama_siswa;
+		$jumlah = count($arr);
+		for ($i=0 ; $i<$jumlah; $i++){
+			DB::table('absensi_siswa')->insert([
+			'tanggal'=>$request->tanggal,
+			'id_siswa' => $arr[$i],
+			'ket_absensi' =>$request->ket_absensi,
+		]);
+		}
+
+		return back()->with('alert-success','Data berhasil ditambahkan');
+	}
 	public function absensi(){
 		if(!Session::get('loginguru')){
 			return redirect('login')->with('alert-error','Silakan Masuk terlebih dahulu');

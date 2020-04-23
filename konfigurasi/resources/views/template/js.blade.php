@@ -68,6 +68,39 @@
       ]
     });
 
+    $('#table_absensi').DataTable({
+      processing:true,
+      serverSide:true,
+      ajax : '{{route('dtabsensi')}}',
+      columns:[
+        {data : 'DT_RowIndex'},
+        {data : 'tanggal',render:function(data,type,row){
+          if(type === "sort" || type === "type"){
+            return data;
+          }
+          return moment(data).format("D-MM-Y");
+         }},
+        {data : 'nama_siswa'},
+        {data : 'nama_keterangan', render: function(data, type, full, meta){
+            if(data == 'Sakit'){
+              return "<span class='label label-warning'>"+data+"<span>";
+            }
+            if(data == 'Tanpa keterangan'){
+              return "<span class='label label-danger'>"+data+"<span>";
+            }
+            if(data == 'Hadir'){
+              return "<span class='label label-info'>"+data+"<span>";
+            }
+            if(data == 'Ijin'){
+              return "<span class='label label-success'>"+data+"<span>";
+            }
+            return data;
+            }},
+        {data : 'action'},
+
+      ]
+    });
+
     $('#table_jadwal_pelajaran').DataTable({
       processing : true,
       serverSide : true,
