@@ -25,7 +25,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue-light sidebar-mini" >
+<body class="hold-transition skin-green-light sidebar-mini" >
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -101,6 +101,7 @@ desired effect
         <li id="li_cal"><a href="{{route('kalender')}}"><i class="fa fa-calendar"></i><span>Kalender Acara</span></a></li>
         <li id="li_user"><a href="{{route('pengguna')}}"><i class="fa fa-users"></i><span>Data Pengguna</span></a></li>
         <li id="li_emplo"><a href="{{route('pegawai')}}"><i class="fa fa-github"></i><span>Data Pegawai</span></a></li>
+        <li id="li_abs"><a href="{{route('absensi')}}"><i class="fa fa-calendar-check-o"></i><span>Absensi Siswa</span></a></li>
         <li><a href="/logout"><i class="fa fa-sign-out"></i><span>Keluar</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->

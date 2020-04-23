@@ -56,6 +56,7 @@ route::get('jp','ControllerAdmin@dtjadwalpelajaran')->name('dtjp');
 
 
 //ROUTE GURU
+Route::get('guru/absensi','ControllerGuru@absensi')->name('absensi');
 Route::put('guru/siswa/update','ControllerGuru@stdupdate')->name('stdupdate');
 Route::get('guru/siswa/get','ControllerGuru@dtsiswa')->name('dtsiswa');
 Route::get('/guru','ControllerUser@guru')->name('dashboard-guru');

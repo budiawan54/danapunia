@@ -26,6 +26,9 @@
 <!-- PACE -->
 <script src="{{asset('bower_components/PACE/pace.min.js')}}"></script>
 <script src="{{asset('bower_components/bootstrap-editable/js/bootstrap-editable.js')}}"></script>
+<!-- iCheck 1.0.1 -->
+<script src="{{asset('plugins/iCheck/icheck.min.js')}}"></script>
+
 
 <script type="text/javascript">
   $(document).ajaxStart(function() {
@@ -33,6 +36,12 @@
         })
   //DATATABLES 
   $(function () {
+
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+                    checkboxClass: 'icheckbox_flat-green',
+                    radioClass: 'iradio_flat-green'
+                })
+
     $('#datetimepicker1 ').datetimepicker({
                   format : 'DD-MM-Y H:m'
                 })
@@ -288,7 +297,6 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Tambah Siswa');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
-      
       break;
       case '/guru/nilai':
       $('#li_nilai_siswa').attr('class','active');
@@ -316,7 +324,15 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Profil');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
-      
+      break;
+      case '/guru/absensi':
+      case '/guru/siswa':
+      $('#li_abs').attr('class','active');
+      $('#ln-dsb').attr('href','{{route('dashboard-guru')}}');
+      $('#foto_profil').attr('href','{{route('profil-guru')}}');      
+      $('title').text('Absensi Siswa');
+      $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
+      break;
       break;
     }
     var judul = $('title').text();

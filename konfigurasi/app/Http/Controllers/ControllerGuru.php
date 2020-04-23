@@ -13,6 +13,16 @@ use DB;
 class ControllerGuru extends Controller
 {
 	//
+	public function absensi(){
+		if(!Session::get('loginguru')){
+			return redirect('login')->with('alert-error','Silakan Masuk terlebih dahulu');
+		} else {
+			$user=ModelUser::where('username',session::get('nama_guru'))->get();
+			$siswa = ModelSiswa::where('kelas',session::get('akses_siswa'))->get();
+			$ket_abs = DB::table('ket_absensi')->get();
+			return view('guru.absensi',compact('user','siswa','ket_abs'));
+		}
+	}
 	public function dtsiswa(){
         $siswa=DB::table('tb_siswa')->join('tb_agama','tb_siswa.faith','=','tb_agama.id_agama')
         	->join('tb_kelamin','tb_siswa.sex','=','tb_kelamin.id_kelamin')
@@ -263,7 +273,7 @@ class ControllerGuru extends Controller
 			return redirect ('login')->with('alert-error','Silakan login terlebih dahulu');
 		} else {
 			$user=ModelUser::where('username',session::get('nama_admin'))->get();
-			return view('guru.pelajaran',compact('user'));
+			return view('admin.mapel',compact('user'));
 		}
 	}
 
