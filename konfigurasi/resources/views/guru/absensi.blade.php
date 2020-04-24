@@ -82,9 +82,11 @@
                 <th>Aksi</th>
               </tr>
             </thead>
+            <tbody id="body_tb_abs"></tbody>
           </table>
         </div>
       </div>
     </div>
 </section>
+@include('template.modal')
 @endsection

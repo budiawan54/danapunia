@@ -13,7 +13,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Batal</button>
-                          <a id="confirm" class="btn btn-primary" href="">Ya, saya yakin</a>
+                          <a id="btn-hapus" class="btn btn-primary" href="">Ya, saya yakin</a>
                         </div>
                       </div>
                       <!-- /.modal-content -->

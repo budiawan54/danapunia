@@ -223,6 +223,7 @@ $(function(){
             }
       })
     $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
+    $('#ln-dsb').attr('href','{{route('dashboard-guru')}}');
 		$('#tabel_nilai_siswa').DataTable({
       processing:true,
       serverSide:true,
@@ -457,7 +458,7 @@ $(function(){
         $('b').text(data[6].kode_mp)
         $('#modal-body').find('span').text('Nilai')
         $('#modal-title').text('Hapus Nilai')
-        $('#confirm').click(function(e){
+        $('#btn-hapus').click(function(e){
           e.preventDefault();
           $.ajax({
           url : '{{route('deletenilai')}}',

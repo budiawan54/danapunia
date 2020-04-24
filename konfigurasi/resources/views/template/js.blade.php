@@ -73,33 +73,42 @@
       serverSide:true,
       ajax : '{{route('dtabsensi')}}',
       columns:[
-        {data : 'DT_RowIndex'},
+        {data : 'DT_RowIndex', orderable:false},
         {data : 'tanggal',render:function(data,type,row){
           if(type === "sort" || type === "type"){
             return data;
           }
           return moment(data).format("D-MM-Y");
-         }},
-        {data : 'nama_siswa'},
+         },class:'tgl_update'},
+        {data : 'nama_siswa', orderable:false},
         {data : 'nama_keterangan', render: function(data, type, full, meta){
-            if(data == 'Sakit'){
+            if(data === 'Sakit'){
               return "<span class='label label-warning'>"+data+"<span>";
             }
-            if(data == 'Tanpa keterangan'){
+            if(data === 'Tanpa keterangan'){
               return "<span class='label label-danger'>"+data+"<span>";
             }
-            if(data == 'Hadir'){
+            if(data === 'Hadir'){
               return "<span class='label label-info'>"+data+"<span>";
             }
-            if(data == 'Ijin'){
+            if(data === 'Ijin'){
               return "<span class='label label-success'>"+data+"<span>";
             }
-            return data;
-            }},
-        {data : 'action'},
-
-      ]
+            if(data === 'Dispensasi'){
+              return "<span class='label label-default'>"+data+"<span>";
+            }
+            }, orderable:false},
+        {data : 'action', orderable:false},
+      ],
+      columnDefs : [{
+        'targets' : 3,
+        'createdCell':  function (td, cellData, rowData, row, col) {
+                   $(td).find('span').attr('data-pk', rowData.id_abs);
+                }
+      }],
     });
+
+
 
     $('#table_jadwal_pelajaran').DataTable({
       processing : true,
@@ -806,6 +815,20 @@ $(document).on('click','.btn-del',function(){
       }
     })
   break;
+  case '/guru/absensi':
+  $.ajax({
+      url:'{{route('json')}}',
+      method: 'get',
+      data:{id:id},
+      dataType:'json',
+      success:function(data){
+        $('b').text(data[7].tanggal)
+        $('#btn-hapus').attr('href','siswa/delete/'+data[7].id_abs)
+        $('.modal-title').html('<center>Hapus data absensi <strong>'+data[7].nama_siswa+'</strong></center>')
+        $('.modal-body').find('span').text('data pada tanggal')
+      }
+    })
+  break;
   }
 })
 
@@ -877,9 +900,22 @@ $(function(){
             }
       })
     },
-   
   });
-  
+  //EDITABLE TABEL ABSENSI
+     $('#body_tb_abs').editable({
+        container :'body',
+        selector : 'span.label',
+        type : 'select',
+        url : '{{route('updateabs')}}',
+        name :'ket_absensi',
+        source: [
+              {value: 1, text: 'Hadir'},
+              {value: 2, text: 'Tanpa keterangan'},
+              {value: 3, text: 'Ijin'},
+              {value: 4, text: 'Sakit'},
+              {value: 5, text: 'Dispensasi'}
+           ]
+    }); 
 })
 
 

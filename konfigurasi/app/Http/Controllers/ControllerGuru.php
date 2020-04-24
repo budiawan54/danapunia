@@ -21,13 +21,14 @@ class ControllerGuru extends Controller
 			->get();
 			return DataTables::of($absensi)
                 ->addColumn('action',function($absensi){
-                    $button = '<a  name="edit" id="'.$absensi->id.'" class="btn-edit label label-warning"><i class="fa fa-edit"></i></a>';
-                    $button .='&nbsp';
-                    $button .= '<a name="del" id="'.$absensi->id.'" class="btn-del label label-danger"><i class="fa fa-trash"></i></i></a>';
+                    $button = '<a name="del" id="'.$absensi->id_abs.'" class="btn-del label label-danger"><i class="fa fa-trash"></i></i></a>';
                     return $button;
                 })
                 ->rawColumns(['action'])
                 ->addIndexColumn()
+                ->setRowId(function ($absensi){
+         				return $absensi->id_abs;
+      				})
                 ->make(true);
 	}
 
@@ -51,6 +52,15 @@ class ControllerGuru extends Controller
 		]);
 		}
 
+		return back()->with('alert-success','Data berhasil ditambahkan');
+	}
+	function updateabs(request $request){
+		$name = $request->get('name');
+		$value = $request->get('value');
+		$id = $request->get('pk');
+		DB::table('absensi_siswa')->where('id_abs',$id)->update([
+			$name => $value
+		]);
 		return back()->with('alert-success','Data berhasil ditambahkan');
 	}
 	public function absensi(){

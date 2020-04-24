@@ -13,6 +13,7 @@ use App\Event;
 use App\ModelNilai;
 Use DataTables;
 Use App\ModelSiswa;
+use App\Absensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -189,10 +190,13 @@ class ControllerAdmin extends Controller
             $ekskul = ModelEkskul::find($id);
             $prestasi=ModelPrestasi::find($id);
             $pegawai=ModelPegawai::where('id_pegawai',$id)->first();
+            $absensi=Absensi::where('id_abs',$id)
+            ->join('tb_siswa','tb_siswa.id','=','absensi_siswa.id_siswa')
+            ->first();
             $siswa = ModelSiswa::find($id);
             $jadwalpelajaran = jadwalpelajaran::find($id);
             $nilai = ModelNilai::find($id);
-            $gabungan = array($kegiatan,$ekskul,$prestasi,$pegawai,$siswa,$jadwalpelajaran,$nilai);
+            $gabungan = array($kegiatan,$ekskul,$prestasi,$pegawai,$siswa,$jadwalpelajaran,$nilai,$absensi);
             echo json_encode($gabungan);
     }
 
