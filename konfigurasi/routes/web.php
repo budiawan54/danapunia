@@ -56,6 +56,7 @@ route::get('jp','ControllerAdmin@dtjadwalpelajaran')->name('dtjp');
 
 
 //ROUTE GURU
+Route::delete('guru/siswa/absensi/delete','ControllerGuru@delabs')->name('delabs');
 Route::post('guru/siswa/absensi/update','ControllerGuru@updateabs')->name('updateabs');
 Route::get('guru/siswa/absensi','ControllerGuru@dtabsensi')->name('dtabsensi');
 Route::post('guru/absensi/store','ControllerGuru@storeabs')->name('storeabs');

@@ -267,36 +267,36 @@
       case '/admin/status':
       $('#li_stts').attr('class','active');
       $('title').text('Status');
-      $('#li_siswa, #li_nilai_siswa').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
       break;
       case '/admin/profil':
       $('#li_prf').attr('class','active');
-      $('#li_siswa, #li_nilai_siswa').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
       $('title').text('Profil');
       break;
       case '/admin/pegawai':
       $('#li_emplo').attr('class','active');
       $('title').text('Data Pegawai');
-      $('#li_siswa, #li_nilai_siswa').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
       break;
       case '/admin/pengguna':
       $('#li_user').attr('class','active');
       $('title').text('Data Pengguna');
-      $('#li_siswa, #li_nilai_siswa').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
       break;
       case '/admin/extra':
       $('#li_xtr').attr('class','active');
       $('title').text('Data Ekstra Kurikuler');
-      $('#li_siswa, #li_nilai_siswa').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
       break;
       case '/admin/kegiatan':
       $('#li_kgt').attr('class','active');
       $('title').text('Data Kegiatan');
-      $('#li_siswa, #li_nilai_siswa').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
       break;
       case '/admin/prestasi':
       $('#li_prt').attr('class','active');
-      $('#li_siswa, #li_nilai_siswa').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
       $('title').text('Prestasi Siswa');
       break;
       case '/guru/jadwal-pelajaran':
@@ -308,13 +308,13 @@
       case '/admin/pelajaran':
       $('#li_pelajaran').attr('class','active');    
       $('title').text('Data Mata Pelajaran');
-      $('#li_siswa, #li_nilai_siswa').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
       
       break;
       case '/admin':
       $('#li_dsb').attr('class','active');
       $('title').text('Admin | Dashboard');
-      $('#li_siswa, #li_nilai_siswa').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
       break;
       case '/guru':
       $('#li_dsb').attr('class','active');
@@ -823,9 +823,20 @@ $(document).on('click','.btn-del',function(){
       dataType:'json',
       success:function(data){
         $('b').text(data[7].tanggal)
-        $('#btn-hapus').attr('href','siswa/delete/'+data[7].id_abs)
         $('.modal-title').html('<center>Hapus data absensi <strong>'+data[7].nama_siswa+'</strong></center>')
         $('.modal-body').find('span').text('data pada tanggal')
+        $('#btn-hapus').on('click',function(){
+          $.ajax({
+            url : '{{route('delabs')}}',
+            type : 'delete',
+            data : {id:id},
+            success:function(){
+              $('.modal').modal('hide')
+              alert('data absensi berhasil dihapus');
+              $('#table_absensi').DataTable().ajax.reload();
+            }
+          })
+        })
       }
     })
   break;

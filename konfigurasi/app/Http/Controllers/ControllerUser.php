@@ -6,6 +6,7 @@ use App\ModelJabatan;
 use App\ModelPegawai;
 use App\ModelPelajaran;
 use App\ModelType;
+use App\ModelSiswa;
 use App\ModelPrestasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -77,7 +78,9 @@ class ControllerUser extends Controller
 			return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
 		} else {
 			$user=ModelUser::where('username',session::get('nama_guru'))->get();
-            return view('guru.dashboard',compact('user'));
+			$siswa = ModelSiswa::where('kelas', Session::get('akses_siswa'))->get();
+			$jml_siswa = count($siswa);
+            return view('guru.dashboard',compact('user','jml_siswa'));
 			
 		}
 	}

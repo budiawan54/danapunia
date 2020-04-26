@@ -12,12 +12,7 @@
 @endsection
 @section('main-content')
 <section class="content">
-  @if (Session::has('alert-success'))
-    <script>
-    window.alert('{{Session::get('alert-success')}}')
-    </script>
-  @endif
-  @if($errors->has('kode_pelajaran') || $errors->has('nama_pelajaran'))
+  @if(Session::has('errors'))
   <div class="container alert alert-error"><h4><center><i class="fa fa-lg fa-ban"></i> Mohon periksa kembali data yang diinput!</center></h4>
   </div>
   @endif
@@ -32,7 +27,7 @@
               {{csrf_field()}}
               <div class="form-group">
                 <label class="control-label">Tanggal</label>     
-                        <input type="date" class="form-control" placeholder="Tanggal" name="tanggal">
+                        <input type="date" class="form-control" placeholder="Tanggal" name="tanggal" value="{{old('tanggal')}}">
                         @if ($errors->has('tanggal'))<p class="text-danger">{{$errors->first('tanggal')}}</p>@endif
               </div>
               <div class="col-sm-6">

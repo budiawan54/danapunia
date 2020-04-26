@@ -64,7 +64,7 @@
       if(session == 1){
       $('#li_cal').attr('class','active');
       $('title').text('Kalender Kegiatan');
-      $('#li_siswa, #li_nilai_siswa').remove();
+      $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
       
 
     /* initialize the calendar

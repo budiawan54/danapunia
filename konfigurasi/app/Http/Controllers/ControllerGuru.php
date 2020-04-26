@@ -5,6 +5,7 @@ use App\ModelPelajaran;
 use App\ModelSiswa;
 use App\ModelUser;
 use App\ModelNilai;
+use App\Absensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use File;
@@ -34,7 +35,8 @@ class ControllerGuru extends Controller
 
 	function storeabs(Request $request){
 		$pesan = [
-			'required' => 'wajib diisi !'
+			'required' => 'wajib diisi !',
+			'unique' => 'Absensi siswa pada tanggal ini sudah ada'
 		];
 
 		$this->validate($request,[
@@ -43,15 +45,45 @@ class ControllerGuru extends Controller
 			'ket_absensi' => 'required',
 		],$pesan);
 		$arr = $request->nama_siswa;
-		$jumlah = count($arr);
-		for ($i=0 ; $i<$jumlah; $i++){
-			DB::table('absensi_siswa')->insert([
-			'tanggal'=>$request->tanggal,
-			'id_siswa' => $arr[$i],
-			'ket_absensi' =>$request->ket_absensi,
-		]);
+		$tanggal = $request->tanggal;
+		$tgl = Absensi::where('tanggal',$tanggal)->get();
+		$id_siswa = Absensi::where('id_siswa',$arr)->get();
+		$jml_tgl = count($tgl);
+		$jml_siswa = count($id_siswa);
+		$jumlah_siswa = count($arr);
+		if($jml_siswa == 0){
+				for ($i=0 ; $i<$jumlah_siswa; $i++){
+					DB::table('absensi_siswa')->insert([
+					'tanggal'=>$request->tanggal,
+					'id_siswa' => $arr[$i],
+					'ket_absensi' =>$request->ket_absensi,
+				]);
+				}
+		} else {
+			if($jml_siswa!=0){
+				if($id_siswa->where('tanggal',$tanggal)->first()){
+					if ($id_siswa->where('tanggal',$tanggal)->first()->tanggal == $tanggal){
+						$this->validate($request,['tanggal'=>'unique:absensi_siswa'],$pesan);
+					} else {
+						for ($i=0 ; $i<$jumlah_siswa; $i++){
+							DB::table('absensi_siswa')->insert([
+							'tanggal'=>$request->tanggal,
+							'id_siswa' => $arr,
+							'ket_absensi' =>$request->ket_absensi,
+						]);
+						}
+					}
+				} else {
+					for ($i=0 ; $i<$jumlah_siswa; $i++){
+						DB::table('absensi_siswa')->insert([
+						'tanggal'=>$request->tanggal,
+						'id_siswa' => $arr[$i],
+						'ket_absensi' =>$request->ket_absensi,
+					]);
+					}
+				}
+			} 
 		}
-
 		return back()->with('alert-success','Data berhasil ditambahkan');
 	}
 	function updateabs(request $request){
@@ -62,6 +94,10 @@ class ControllerGuru extends Controller
 			$name => $value
 		]);
 		return back()->with('alert-success','Data berhasil ditambahkan');
+	}
+	function delabs(Request $request){
+		$id = $request->id;
+		$abs = Absensi::where('id_abs',$id)->delete();
 	}
 	public function absensi(){
 		if(!Session::get('loginguru')){
@@ -207,7 +243,7 @@ class ControllerGuru extends Controller
 		return back()->with('alert-success','Pelajaran berhasil diperbarui');
     }
 	public function mpdel($id) {
-		ModelPelajaran::destroy($id);
+		DB::table('tb_pelajaran')->where('id_pelajaran',$id)->delete();
 		return back()->with('alert-success','Mata pelajaran berhasil dihapus');
 	}
 
