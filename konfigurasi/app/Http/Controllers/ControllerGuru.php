@@ -14,6 +14,12 @@ use DB;
 class ControllerGuru extends Controller
 {
 	//
+	function storetugas(Request $request){
+		$pesan = ['required' => 'Wajib diisi'];
+		$this->validate($request,[
+			'judul' => 'required'
+		],$pesan);
+	}
 	function dtabsensi(){
 		$absensi = DB::table('absensi_siswa')
 			->join('ket_absensi','ket_absensi.id_absensi','=','absensi_siswa.ket_absensi')

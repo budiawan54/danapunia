@@ -250,14 +250,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
+        <span aria-hidden="true">&times;</span></button>
         <center><h4><i class="fa fa-edit"></i> Tambah Tugas Baru</h4></center>
       </div>
       <div class="modal-body">
         <form id="form-add-tugas">
           {{csrf_field()}}
           <div class="form-group">
-            <input type="text" class="form-control" name="judul" placeholder="Judul tugas atau mata pelajaran">
+            <input type="text" class="form-control" name="judul" placeholder="Judul tugas atau mata pelajaran" id="judul">
           </div>
           <div class="form-group"> 
             <textarea class="form-control" name="deskripsi" rows="8" placeholder="Tulis soal disini..."></textarea>

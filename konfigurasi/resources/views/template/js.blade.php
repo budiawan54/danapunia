@@ -332,7 +332,23 @@
       $('#form-add-tugas').submit(function(e){
         e.preventDefault();
         $.ajax({
-          url :
+          url : '{{route('storetugas')}}',
+          type : 'post',
+          data : $(this).serialize(),
+          success:function(){
+
+          },
+          error: function(xhr){
+          let response = xhr.responseJSON
+          let errors = response.errors
+          if($.isEmptyObject(errors)==false){
+           $.each(errors,function(key,value){
+             var p = $('<strong class="text-danger"></strong>').text(value);
+             $('#'+key).after(p);
+             
+              })
+            }
+          }
         })
       })
       /*$('#li_schedule').attr('href','{{route('schedule')}}');*/
