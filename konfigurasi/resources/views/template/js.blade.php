@@ -322,6 +322,19 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Guru | Dashboard');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
+      $('.ion-person-add').on('click',function(){
+        window.location.href = '{{route('siswa')}}'
+      })
+      $('#calendar').datepicker();
+      $('#btn-add-tugas').on('click',function(){
+        $('.modal').modal('show')
+      })
+      $('#form-add-tugas').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+          url :
+        })
+      })
       /*$('#li_schedule').attr('href','{{route('schedule')}}');*/
       /**/
       break;
@@ -339,6 +352,7 @@
       $('#foto_profil').attr('href','{{route('profil-guru')}}');      
       $('title').text('Tambah Siswa');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_pelajaran').remove();
+      $('#lahir').datepicker();
       break;
       case '/guru/nilai':
       $('#li_nilai_siswa').attr('class','active');

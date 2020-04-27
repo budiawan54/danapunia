@@ -30,7 +30,7 @@
                 <div class="form-group date">
                   <label  class="col-sm-2 control-label">Tanggal Lahir</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="lahir" value="{{old('lahir')}}" id="datepicker" placeholder="Tanggal lahir">
+                    <input type="text" class="form-control" name="lahir" value="{{old('lahir')}}" id="lahir" placeholder="Tanggal lahir">
                      @if($errors->has('lahir'))<p class="text-danger">{{$errors->first('lahir')}}</p>@endif
                   </div>
                 </div>
