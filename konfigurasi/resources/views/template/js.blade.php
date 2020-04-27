@@ -334,9 +334,17 @@
         $.ajax({
           url : '{{route('storetugas')}}',
           type : 'post',
-          data : $(this).serialize(),
+          data : new FormData(this),
+          contentType : false,
+          processData : false,
+          beforeSend:function(){
+          $('strong.text-danger').remove();
+        },
           success:function(){
-
+            alert ('tugas berhasil ditambahkan')
+            $('.modal').modal('hide')
+            $('input').val('')
+            $('textarea').val('')
           },
           error: function(xhr){
           let response = xhr.responseJSON

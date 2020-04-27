@@ -15,10 +15,31 @@ class ControllerGuru extends Controller
 {
 	//
 	function storetugas(Request $request){
-		$pesan = ['required' => 'Wajib diisi'];
+		$pesan = [
+			'mimes' => 'file harus bertipe pdf, doc atau docx',
+			'required' => 'Wajib diisi',
+	];
 		$this->validate($request,[
-			'judul' => 'required'
+			'judul' => 'required',
+			'file' => 'file|mimes:pdf,doc,docx',
+
 		],$pesan);
+		if($request->has('file')){
+			$file = $request->file('file');
+			$namafile = $file->getClientOriginalName();
+			$folder = 'storage/file-tugas';
+			$file->move($folder,$namafile);
+			DB::table('tb_tugas')->insert([
+			'judul_tugas' => $request->judul,
+			'deskripsi' => $request->deskripsi,
+			'file' => $namafile,
+			]);
+		}
+		DB::table('tb_tugas')->insert([
+			'judul_tugas' => $request->judul,
+			'deskripsi' => $request->deskripsi,
+			'file' => $request->file,
+		]);
 	}
 	function dtabsensi(){
 		$absensi = DB::table('absensi_siswa')
@@ -71,13 +92,13 @@ class ControllerGuru extends Controller
 					if ($id_siswa->where('tanggal',$tanggal)->first()->tanggal == $tanggal){
 						$this->validate($request,['tanggal'=>'unique:absensi_siswa'],$pesan);
 					} else {
-						for ($i=0 ; $i<$jumlah_siswa; $i++){
+						
 							DB::table('absensi_siswa')->insert([
 							'tanggal'=>$request->tanggal,
 							'id_siswa' => $arr,
 							'ket_absensi' =>$request->ket_absensi,
 						]);
-						}
+						
 					}
 				} else {
 					for ($i=0 ; $i<$jumlah_siswa; $i++){
@@ -182,6 +203,8 @@ class ControllerGuru extends Controller
     	if(!Session::get('loginguru')){
     		return redirect ('login')->with('alert-error','Silakan masuk terlebih dahulu');
     	} else {
+    		$tugas = DB::table('tb_tugas')->get();
+    		$jml_tugas = count($tugas);
     		$siswa=ModelSiswa::find($id);
     		$pelajaran = ModelNilai::where('id_siswa',$id)->get();
     		$kode_mp=ModelPelajaran::all();
@@ -208,13 +231,7 @@ class ControllerGuru extends Controller
 	    			->first()->ulangan_umum;
     			}   			
     		}
-    		
-    		
-
-    		//dd($pelajaran->where('id_siswa',$id)->first()->kode_mp);
-    		//dd($a);
-    		//dd(json_encode($categories));
-    		return view('guru.nilai',compact('siswa','pelajaran','kode_mp','user','categories','data','nama'));
+    		return view('guru.nilai',compact('siswa','pelajaran','kode_mp','user','categories','data','nama','jml_tugas'));
     		
     	}
     }

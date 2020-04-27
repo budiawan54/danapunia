@@ -33,7 +33,7 @@
             </div>
             <div class="box-footer no-padding">
               <ul class="nav nav-stacked">
-                <li><a href="javascript:void(0)">Jumlah Tugas<span class="pull-right badge bg-blue nilai_tugas" id="{{$siswa->id}}" data-title="Masukkan jumlah tugas" data-pk='{{$siswa->id}}' data-type='number' data-url="/guru/nilai/update/jmltgs/{{$siswa->id}}" data-name='jumlah_tugas' data-belum='{{$siswa->jumlah_tugas - $siswa->tugas_selesai}}'>{{$siswa->jumlah_tugas}}</span></a></li>
+                <li><a href="javascript:void(0)">Jumlah Tugas<span class="pull-right badge bg-blue nilai_tugas" id="{{$siswa->id}}" data-title="Masukkan jumlah tugas" data-pk='{{$siswa->id}}' data-type='number' data-url="/guru/nilai/update/jmltgs/{{$siswa->id}}" data-name='jumlah_tugas' data-belum='{{$siswa->jumlah_tugas - $siswa->tugas_selesai}}'>{{$jml_tugas}}</span></a></li>
                 <li><a href="javascript:void(0)">Ulangan <span class="pull-right badge bg-aqua" id="jumlah_ulangan" data-title="Masukkan jumlah ulangan" data-pk='{{$siswa->id}}' data-type='number' data-url="/guru/nilai/update/jmltgs/{{$siswa->id}}" data-name='jumlah_ulangan'  >{{$siswa->jumlah_ulangan}}</span></a></li>
                 <li><a href="javascript:void(0)">Tugas Selesai <span class="pull-right badge bg-green" id="tugas_selesai" data-title="Masukkan jumlah tugas selesai" data-pk='{{$siswa->id}}' data-type='number' data-url="/guru/nilai/update/jmltgs/{{$siswa->id}}" data-name='tugas_selesai'>{{$siswa->tugas_selesai}}</span></a></li> 
                 <li><a href="javascript:void(0)">Tugas Belum Selesai <span class="pull-right badge bg-red" id="tugas_belum_selesai">0</span></a></li>

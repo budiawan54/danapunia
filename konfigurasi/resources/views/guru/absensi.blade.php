@@ -36,7 +36,8 @@
 
                     @foreach ($siswa as $siswa)
                     <label>
-                      <input type="checkbox" class="minimal" value="{{$siswa->id}}" name="nama_siswa[]"> {{$siswa->nama_siswa}}
+                     
+                      <input type="checkbox" class="minimal" value="{{$siswa->id}}" name="nama_siswa[]" {{ (collect(old('nama_siswa'))->contains($siswa->id)) ? 'checked':'' }} > {{$siswa->nama_siswa}}
                     </label> <br/>
                     @endforeach
                 </div>
@@ -46,7 +47,11 @@
                   <label>Keterangan</label> @if ($errors->has('ket_absensi'))<strong class="text-danger">{{$errors->first('ket_absensi')}}</strong>@endif<br/>
                     @foreach ($ket_abs as $ket)
                       <label>
+                        @if (old('ket_absensi') == $ket->id_absensi)
+                        <input type="radio" name="ket_absensi" class="minimal" value="{{$ket->id_absensi}}" checked>
+                        @else 
                         <input type="radio" name="ket_absensi" class="minimal" value="{{$ket->id_absensi}}">
+                        @endif
                       </label> {{$ket->nama_keterangan}}<br/>
                     @endforeach
                 </div>
