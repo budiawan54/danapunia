@@ -477,12 +477,7 @@ $(function(){
         $('p').remove();
        
       },
-      success:function(data){
-      alert('Nilai berhasil ditambahkan');
-      $('.modal').modal('hide');
-      $('input').val('');
-      $('#tabel_nilai_siswa').DataTable().ajax.reload();
-      },
+      success:process,
       error: function(xhr){
         let response = xhr.responseJSON
         let errors = response.errors

@@ -7,6 +7,7 @@ use App\ModelPegawai;
 use App\ModelPelajaran;
 use App\ModelType;
 use App\ModelSiswa;
+use App\ModelNilai;
 use App\ModelPrestasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Crypt;
 use DataTables;
 use File;
+use DB;
 
 class ControllerUser extends Controller
 {
@@ -79,7 +81,37 @@ class ControllerUser extends Controller
     		return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
     	} else {
     		$user=ModelUser::where('username',session::get('nama_siswa'))->get();
-    		return view('siswa.dashboard',compact('user'));
+    		$siswa=ModelSiswa::where('id',session::get('id_siswa'))->get();
+    		$kode_mp=ModelPelajaran::all();
+    		$pelajaran = ModelNilai::where('id_siswa',Session::get('id_siswa'))->get();
+    		$tugas = DB::table('tb_tugas')->get();
+    		$jml_tugas = count($tugas);
+    		$categories = [];
+    		for ($i=1 ; $i<=12 ; $i++){
+    			$data[$i] = [];
+    			$nama[$i]= ['ulangan harian '.$i];
+    			$nama['11'] = ['UTS'];
+    			$nama['12'] = ['ulangan umum'];
+    		}
+    		foreach ($kode_mp as $mp){
+    			if ($pelajaran->where('kode_mp',$mp->nama_pelajaran)
+    				->first()){
+    				$categories[] = $mp->nama_pelajaran;
+    				for ($i=1 ; $i<=10 ; $i++){
+    				$name[$i] = 'ulangan_harian_'.$i;
+    				$name[11] = 'UTS';
+    				$name[12] = 'Ulangan Umum';
+	    			$data[$i][] = $pelajaran->where('kode_mp',$mp->nama_pelajaran)
+	    			->first()->{'ulangan_harian_'.$i};
+    				}
+    				$data[11][] =$pelajaran->where('kode_mp',$mp->nama_pelajaran)
+	    			->first()->uts;
+	    			$data[12][] =$pelajaran->where('kode_mp',$mp->nama_pelajaran)
+	    			->first()->ulangan_umum;
+    			}   			
+    		}
+    		//dd(json_encode($data[1]));
+    		return view('siswa.dashboard',compact('user','siswa','jml_tugas','categories','kode_mp','name','data'));
     	}
     }
 
@@ -328,6 +360,7 @@ public function proseslogin(Request $request) {
 							Session::put('nama_siswa',$datauser->username);
 							Session::put('user',$datauser->username);
 							Session::put('type',$datauser->type);
+							Session::put('id_siswa',$datauser->id_siswa);
 							Session::put('loginsiswa', TRUE);
 							Session::put('login',TRUE);
 							return redirect('siswa')->with('alert-success','Selamat Datang'.$datauser->nama);

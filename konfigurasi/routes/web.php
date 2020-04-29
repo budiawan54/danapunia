@@ -18,7 +18,7 @@ Route::get('/login', function(){
 Route::get('/daftar-online', function(){
 	return view('daftar-online');
 });
-Route::get('/logout', 'ControllerUser@keluar');
+Route::get('/logout', 'ControllerUser@keluar')->name('logout');
 
 //ROUTE PENDAFTAR
 Route::get('/userbaru', 'ControllerUser@userbaru')->name('pendaftar');
