@@ -61,7 +61,8 @@ class ControllerUser extends Controller
 			$pengguna=ModelUser::all();
 			$type = ModelType::where('id_type','!=','4')->get();
 			$user=ModelUser::where('username',Session::get('nama_admin'))->get();
-			return view('admin.pengguna',compact('pengguna','user','type'));
+			$siswa = ModelSiswa::all();
+			return view('admin.pengguna',compact('pengguna','user','type','siswa'));
 		}
 	}
 	public function admin(){ 
@@ -73,6 +74,15 @@ class ControllerUser extends Controller
 		}
 	}
 
+	public function siswa(){
+    	if(!session::get('loginsiswa')){
+    		return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
+    	} else {
+    		$user=ModelUser::where('username',session::get('nama_siswa'))->get();
+    		return view('siswa.dashboard',compact('user'));
+    	}
+    }
+
 	public function guru(){
 		if(!session::get('loginguru')){
 			return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
@@ -80,7 +90,7 @@ class ControllerUser extends Controller
 			$user=ModelUser::where('username',session::get('nama_guru'))->get();
 			$siswa = ModelSiswa::where('kelas', Session::get('akses_siswa'))->get();
 			$jml_siswa = count($siswa);
-            return view('guru.dashboard',compact('user','jml_siswa'));
+            return view('guru.dashboard',compact('user','jml_siswa','siswa'));
 			
 		}
 	}
@@ -142,6 +152,7 @@ $this->validate($request,
 	$data->password = bcrypt($request->password);
 	$data->akses_siswa = $request->hakakses;
 	$data->type = $request->pengguna;
+	$data->id_siswa= $request->siswa;
 	$data->save();
 	return back()->with('alert-success','Pengguna telah ditambahkan');	
 }
@@ -312,6 +323,15 @@ public function proseslogin(Request $request) {
 						Session::put('loginguru', TRUE);
 						Session::put('login',TRUE);
 						return redirect('guru')->with('alert-success','Selamat Datang '.$datauser->nama);
+					} else {
+						if (($datauser->type) == 3){
+							Session::put('nama_siswa',$datauser->username);
+							Session::put('user',$datauser->username);
+							Session::put('type',$datauser->type);
+							Session::put('loginsiswa', TRUE);
+							Session::put('login',TRUE);
+							return redirect('siswa')->with('alert-success','Selamat Datang'.$datauser->nama);
+						}
 					}
 				}
 			}

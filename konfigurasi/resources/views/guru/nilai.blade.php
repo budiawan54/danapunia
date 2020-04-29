@@ -45,6 +45,31 @@
         </div>
         <div class="col-md-8">
           <div class="box box-primary">
+            <div class="box-header">
+              <h2 class="box-title">Daftar tugas</h2>
+               <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                </div>
+            <div class="box-body table-responsive">
+                <table class="table table-bordered table-striped" id="table-tugas-siswa">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Judul Tugas</th>
+                      <th>Deskripsi Tugas</th>
+                      <th>File</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead> 
+                </table>
+              </div>
+          </div> 
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
             <div class="box-header with-border">
               <i class="fa fa-bar-chart-o"></i>
 
@@ -55,8 +80,7 @@
             </div>
             <!-- /.box-body-->
           </div>
-        	
-        </div>
+      </div>
     </div>
     <div class="row">
     	<div class="col-xs-12">
@@ -212,6 +236,33 @@
 <script>
 
 $(function(){
+    $('#table-tugas-siswa').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax : '{{route('dttugas')}}',
+      columns:[
+      {data : 'DT_RowIndex'},
+      {data : 'judul_tugas'},
+      {data : 'deskripsi',orderable: false},
+      {data: 'file',
+            render: function(data, type, full, meta){
+              if (data != null){
+              return "<a href='{{ url('/storage/file-tugas')}}/"+data+"'/>"+data+"</a>";
+              }
+              return '<span class="label label-danger">Tidak ada file</span>';
+            },
+            orderable: false
+        },
+        {data :'status', orderable:false,
+            render : function(data, type, full, meta){
+              if (data == 4){
+                return '<span class="label label-danger">Belum melakukan apapun</span>';
+              }
+            }
+        }
+      ]
+    })
+
     var id = $('#nomor_id').text();
     $.ajax({
         url:'{{route('json')}}',

@@ -49,15 +49,18 @@
                 <div class="form-group">
                   <label for="inputPassword3" class="col-sm-2 control-label">Jenis Pengguna</label>
                   <div class="col-sm-6">
-                    <select class="form-control select2" name="pengguna" style="width: 100%;">
-                      @foreach ($type as $type)
-                      <option value="{{$type->id_type}}">{{$type->nama_type}}</option>
-                      @endforeach
-                    </select>
+                    <div class="radio">
+                    @foreach ($type as $type)
+                    <label>
+                      <input type="radio" name="pengguna" id="pengguna" value="{{$type->id_type}}">
+                      {{$type->nama_type}}
+                    </label>
+                    @endforeach
+                  </div>
                     @if($errors->has('pengguna'))<div class="text-danger">{{$errors->first('pengguna')}}</div>@endif
                   </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="hakakses">
                   <label for="inputPassword3" class="col-sm-2 control-label">Hak Akses</label>
                   <div class="col-sm-10">
                     <select class="form-control select2" name="hakakses" style="width: 100%">
@@ -73,11 +76,22 @@
                     @if($errors->has('hakakses'))<div class="text-danger">{{$errors->first('hakakses')}}</div>@endif
                   </div>
                 </div>
-                
+                <div class="form-group" id="link-to">
+                  <label class="col-sm-2 control-label">Link to</label>
+                  <div class="col-sm-10">
+                    <select class="form-control select2" name="siswa" style="width: 100%">
+                      <option class="hidden" selected=""></option>
+                      @foreach($siswa as $siswa)
+                      <option value="{{$siswa->id}}">{{$siswa->nama_siswa}}</option>
+                      @endforeach
+                    </select>
+                    @if($errors->has('siswa'))<div class="text-danger">{{$errors->first('siswa')}}</div>@endif
+                  </div>
+                </div>
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <a href="../admin" class="btn btn-default" type="button">Batal</a>
+                <a href="/admin" class="btn btn-default" type="button">Batal</a>
                 <button type="submit" class="btn btn-success pull-right">Tambah</button>
               </div>
               <!-- /.box-footer -->

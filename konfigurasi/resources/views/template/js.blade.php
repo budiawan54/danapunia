@@ -283,6 +283,18 @@
       $('#li_user').attr('class','active');
       $('title').text('Data Pengguna');
       $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
+
+      $('input[type="radio"][value="3"]').click(function(){
+        $('#hakakses').attr('style','display:none')
+        $('#link-to').attr('style','')
+      })
+      $('input[type="radio"][value="2"]').click(function(){
+        $('#link-to').attr('style','display:none')
+        $('#hakakses').attr('style','')
+      })
+      $('input[type="radio"][value="1"]').click(function(){
+        $('#link-to, #hakakses').attr('style','display:none')
+      })
       break;
       case '/admin/extra':
       $('#li_xtr').attr('class','active');
@@ -358,6 +370,15 @@
             }
           }
         })
+      })
+      $('#table-tugas').DataTable({
+        serverSide : true,
+        processing : true,
+        ajax : '{{route('dttugas')}}',
+        columns:[
+        {data: 'DT_RowIndex'},
+        {data : 'judul_tugas'},
+        ]
       })
       /*$('#li_schedule').attr('href','{{route('schedule')}}');*/
       /**/

@@ -53,9 +53,11 @@ route::get('dtjm','ControllerAdmin@dtjadwalmengajar')->name('dtjm');
 route::get('jp','ControllerAdmin@dtjadwalpelajaran')->name('dtjp');
 /*route::get('dtjp','ControllerAdmin@loadjadwalpelajaran')->name('loaddtjp');*/
 
-
+//ROUTE SISWA
+Route::get('siswa','ControllerUser@siswa')->name('dashboard-siswa');
 
 //ROUTE GURU
+Route::get('guru/gettugas','ControllerGuru@dttugas')->name('dttugas');
 Route::post('guru/tugas/store','ControllerGuru@storetugas')->name('storetugas');
 Route::delete('guru/siswa/absensi/delete','ControllerGuru@delabs')->name('delabs');
 Route::post('guru/siswa/absensi/update','ControllerGuru@updateabs')->name('updateabs');

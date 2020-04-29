@@ -122,127 +122,37 @@
           </div>
           <!-- /.box -->
         </div>
-        <div class="col-sm-4">
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Tugas terbaru</h3>
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                                </div>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <div class="table-responsive">
-                                    <table class="table no-margin">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Judul Tugas</th>
-                                                <th>Persentasi Selesai</th>
-                                                <th>Popularity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                <td>Call of Duty IV</td>
-                                                <td><span class="label label-success">Shipped</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.table-responsive -->
-                            </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer clearfix">
-                                <center><a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat" id="btn-add-tugas">Tambah tugas baru</a></center>
-                            </div>
-                            <!-- /.box-footer -->
-                        </div>
-        </div>
-        <div class="col-sm-4">
-           <!-- Calendar -->
-          <div class="box box-solid">
+        <div class="col-sm-6">
+          <div class="box box-primary">
             <div class="box-header">
-              <i class="fa fa-calendar"></i>
-
-              <h3 class="box-title">Kalender Acara</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <!-- button with a dropdown -->
+              <h2 class="box-title">Daftar tugas</h2>
+               <div class="box-tools pull-right">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-bars"></i></button>
+                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i></button>
                   <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="#">Add new event</a></li>
-                    <li><a href="#">Clear events</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">View calendar</a></li>
+                    <li><a href="javascript:void(0)" id="btn-add-tugas">Tambah Tugas Baru</a></li>
                   </ul>
                 </div>
-                <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                 </button>
-                <button type="button" class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i>
-                </button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body no-padding">
-              <!--The calendar -->
-              <div id="calendar" style="width: 100%"></div>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer text-black">
-              <div class="row">
-                <div class="col-sm-6">
-                  <!-- Progress bars -->
-                  <div class="clearfix">
-                    <span class="pull-left">Task #1</span>
-                    <small class="pull-right">90%</small>
-                  </div>
-                  <div class="progress xs">
-                    <div class="progress-bar progress-bar-green" style="width: 90%;"></div>
-                  </div>
-
-                  <div class="clearfix">
-                    <span class="pull-left">Task #2</span>
-                    <small class="pull-right">70%</small>
-                  </div>
-                  <div class="progress xs">
-                    <div class="progress-bar progress-bar-green" style="width: 70%;"></div>
-                  </div>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                 </div>
-                <!-- /.col -->
-                <div class="col-sm-6">
-                  <div class="clearfix">
-                    <span class="pull-left">Task #3</span>
-                    <small class="pull-right">60%</small>
-                  </div>
-                  <div class="progress xs">
-                    <div class="progress-bar progress-bar-green" style="width: 60%;"></div>
-                  </div>
-
-                  <div class="clearfix">
-                    <span class="pull-left">Task #4</span>
-                    <small class="pull-right">40%</small>
-                  </div>
-                  <div class="progress xs">
-                    <div class="progress-bar progress-bar-green" style="width: 40%;"></div>
-                  </div>
-                </div>
-                <!-- /.col -->
+            <div class="box-body table-responsive">
+                <table class="table table-bordered table-striped" id="table-tugas">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Judul Tugas</th>
+                      <th>Progress</th>
+                      <th>Label</th>
+                      
+                    </tr>
+                  </thead> 
+                </table>
               </div>
-              <!-- /.row -->
-            </div>
+          </div> 
           </div>
-          <!-- /.box calendar-->
-        </div>
+      </div>
       </div>
 </section>
 <div class="modal fade" id="add-tugas">

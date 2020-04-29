@@ -24,22 +24,33 @@ class ControllerGuru extends Controller
 			'file' => 'file|mimes:pdf,doc,docx',
 
 		],$pesan);
-		if($request->has('file')){
-			$file = $request->file('file');
-			$namafile = $file->getClientOriginalName();
-			$folder = 'storage/file-tugas';
-			$file->move($folder,$namafile);
+			if($request->has('file')){
+				$file = $request->file('file');
+				$namafile = $file->getClientOriginalName();
+				$folder = 'storage/file-tugas';
+				$file->move($folder,$namafile);
+				DB::table('tb_tugas')->insert([
+				'judul_tugas' => $request->judul,
+				'deskripsi' => $request->deskripsi,
+				'file' => $namafile,
+				'kelas' => Session::get('akses_siswa'),
+				'status' => '4'
+				]);
+			} else {
 			DB::table('tb_tugas')->insert([
 			'judul_tugas' => $request->judul,
 			'deskripsi' => $request->deskripsi,
-			'file' => $namafile,
-			]);
-		}
-		DB::table('tb_tugas')->insert([
-			'judul_tugas' => $request->judul,
-			'deskripsi' => $request->deskripsi,
 			'file' => $request->file,
-		]);
+			'kelas' => Session::get('akses_siswa'),
+			'status' => '4'
+			]);
+			}
+	}
+	function dttugas(){
+		$tugas = DB::table('tb_tugas')->where('kelas',Session::get('akses_siswa'))->get();
+		return DataTables::of($tugas)
+		->addIndexColumn()
+		->make(true);
 	}
 	function dtabsensi(){
 		$absensi = DB::table('absensi_siswa')
@@ -231,6 +242,7 @@ class ControllerGuru extends Controller
 	    			->first()->ulangan_umum;
     			}   			
     		}
+    		//dd(count(ModelSiswa::where('tugas_selesai')->get()));
     		return view('guru.nilai',compact('siswa','pelajaran','kode_mp','user','categories','data','nama','jml_tugas'));
     		
     	}
