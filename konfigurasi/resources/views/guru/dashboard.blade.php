@@ -46,7 +46,7 @@
       <!-- /.row -->
       <div class="row">
         <div class="col-sm-4">
-           <!-- PRODUCT LIST -->
+           <!-- TUGAS LIST -->
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Laporan tugas siswa terbaru</h3>

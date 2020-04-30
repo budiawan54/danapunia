@@ -184,7 +184,7 @@
           <!-- /.widget-user -->
           @endforeach
         </div>
-        <div class="col-md-8">
+        <div class="col-md-5">
           <div class="box box-primary">
             <div class="box-header">
               <h2 class="box-title">Daftar tugas</h2>
@@ -205,13 +205,48 @@
                       <th>Judul Tugas</th>
                       <th>Deskripsi Tugas</th>
                       <th>File</th>
-                      <th>Status</th>
                     </tr>
                   </thead> 
                 </table>
               </div>
           </div> 
           </div>
+        </div>
+        <div class="col-md-3">
+           <!-- TUGAS LIST -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Status tugas</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <ul class="products-list product-list-in-box">
+                @foreach($status_tugas as $st)
+                <li class="item">
+                    <a href="javascript:void(0)" class="product-title">{{$st->judul_tugas}}
+                     
+                    <span class="label @if($st->nama_status == 'Disetujui') label-success @elseif ($st->nama_status == 'Tidak disetujui') label-danger @elseif ($st->nama_status == 'Kurang Lengkap') label-warning @elseif ($st->nama_status == 'Belum diperiksa') label-info @endif pull-right">{{$st->nama_status}}</span>
+                    </a>
+                    <span class="product-description">
+                          {{$st->comment}}
+                    </span>
+                </li>
+                @endforeach
+              </ul>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer text-center">
+              <a href="javascript:void(0)" class="uppercase">Lihat semua data</a>
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
         </div>
     </div>
     <div class="row">
@@ -309,13 +344,6 @@ $(function(){
             },
             orderable: false
         },
-        {data :'status', orderable:false,
-            render : function(data, type, full, meta){
-              if (data == 4){
-                return '<span class="label label-danger">Belum melakukan apapun</span>';
-              }
-            }
-        }
       ]
     })
 

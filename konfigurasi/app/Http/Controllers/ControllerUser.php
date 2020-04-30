@@ -84,6 +84,10 @@ class ControllerUser extends Controller
     		$siswa=ModelSiswa::where('id',session::get('id_siswa'))->get();
     		$kode_mp=ModelPelajaran::all();
     		$pelajaran = ModelNilai::where('id_siswa',Session::get('id_siswa'))->get();
+    		$status_tugas= DB::table('list_tugas')
+    			->join('tb_tugas','tb_tugas.id_tugas','list_tugas.id_tugas')
+    			->join('status','status.id_status','=','list_tugas.status')
+    			->get();
     		$tugas = DB::table('tb_tugas')->get();
     		$jml_tugas = count($tugas);
     		$categories = [];
@@ -111,7 +115,7 @@ class ControllerUser extends Controller
     			}   			
     		}
     		//dd(json_encode($data[1]));
-    		return view('siswa.dashboard',compact('user','siswa','jml_tugas','categories','kode_mp','name','data','tugas'));
+    		return view('siswa.dashboard',compact('user','siswa','jml_tugas','categories','kode_mp','name','data','tugas','status_tugas'));
     	}
     }
 
