@@ -380,6 +380,21 @@
         {data : 'judul_tugas'},
         ]
       })
+      $.fn.editable.defaults.mode = 'popup';
+      $('span.label').editable({
+        ajaxOptions :{
+          type : 'put'
+        },
+        type : 'select',
+        url : '{{route('updatestatustugas')}}',
+        name :'status',
+        source: [
+              {value: 1, text: 'Disetujui'},
+              {value: 2, text: 'Tidak disetujui'},
+              {value: 3, text: 'Kurang Lengkap'},
+              {value: 4, text: 'Belum diperiksa'},
+           ]
+      })
       /*$('#li_schedule').attr('href','{{route('schedule')}}');*/
       /**/
       break;

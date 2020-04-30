@@ -60,58 +60,21 @@
             <!-- /.box-header -->
             <div class="box-body">
               <ul class="products-list product-list-in-box">
+                @foreach($status_tugas as $st)
                 <li class="item">
                   <div class="product-img">
-                    <img src="dist/img/default-50x50.gif" alt="Product Image">
+                    <img src="{{url('/foto_siswa/'.$st->student_photos)}}" alt="Product Image">
                   </div>
                   <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">Samsung TV
-                      <span class="label label-warning pull-right">$1800</span></a>
+                    {{$st->nama_siswa}} :
+                    <a href="javascript:void(0)" class="product-title">{{$st->judul_tugas}}
+                      <span data-pk='{{$st->id_list}}' class="label @if($st->nama_status == 'Disetujui') label-success @elseif ($st->nama_status == 'Tidak disetujui') label-danger @elseif ($st->nama_status == 'Kurang Lengkap') label-warning @elseif ($st->nama_status == 'Belum diperiksa') label-info @endif pull-right">{{$st->nama_status}}</span>
                     <span class="product-description">
-                          Samsung 32" 1080p 60Hz LED Smart HDTV.
+                          {{$st->comment}}
                         </span>
                   </div>
                 </li>
-                <!-- /.item -->
-                <li class="item">
-                  <div class="product-img">
-                    <img src="dist/img/default-50x50.gif" alt="Product Image">
-                  </div>
-                  <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">Bicycle
-                      <span class="label label-info pull-right">$700</span></a>
-                    <span class="product-description">
-                          26" Mongoose Dolomite Men's 7-speed, Navy Blue.
-                        </span>
-                  </div>
-                </li>
-                <!-- /.item -->
-                <li class="item">
-                  <div class="product-img">
-                    <img src="dist/img/default-50x50.gif" alt="Product Image">
-                  </div>
-                  <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">Xbox One <span
-                        class="label label-danger pull-right">$350</span></a>
-                    <span class="product-description">
-                          Xbox One Console Bundle with Halo Master Chief Collection.
-                        </span>
-                  </div>
-                </li>
-                <!-- /.item -->
-                <li class="item">
-                  <div class="product-img">
-                    <img src="dist/img/default-50x50.gif" alt="Product Image">
-                  </div>
-                  <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">PlayStation 4
-                      <span class="label label-success pull-right">$399</span></a>
-                    <span class="product-description">
-                          PlayStation 4 500GB Console (PS4)
-                        </span>
-                  </div>
-                </li>
-                <!-- /.item -->
+                @endforeach
               </ul>
             </div>
             <!-- /.box-body -->
@@ -145,7 +108,6 @@
                       <th>Judul Tugas</th>
                       <th>Progress</th>
                       <th>Label</th>
-                      
                     </tr>
                   </thead> 
                 </table>
@@ -169,13 +131,12 @@
           <div class="form-group">
             <input type="text" class="form-control" name="judul" placeholder="Judul tugas atau mata pelajaran" id="judul">
           </div>
-          <div class="form-group"> 
-            <textarea class="form-control" name="deskripsi" rows="8" placeholder="Tulis soal disini..." id="deskripsi">{{{ old('deskripsi') }}}</textarea>
-          </div>
-          <center><label>Atau</label></center>
           <div class="form-group">
             <input type="file" class="form-control" name="file" id="file">
           </div>
+          <div class="form-group"> 
+            <textarea class="form-control" name="deskripsi" rows="8" placeholder="Tulis komentar disini..." id="deskripsi">{{{ old('deskripsi') }}}</textarea>
+          </div>        
           <div class="modal-footer">
             <button type="submit" class="btn btn-default">Submit</button>
           </div>

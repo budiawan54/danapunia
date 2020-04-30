@@ -47,7 +47,9 @@ class ControllerGuru extends Controller
 			}
 	}
 	function dttugas(){
-		$tugas = DB::table('tb_tugas')->where('kelas',Session::get('akses_siswa'))->get();
+		$tugas = DB::table('tb_tugas')
+		->where('kelas',Session::get('akses_siswa'))
+		->get();
 		return DataTables::of($tugas)
 		->addIndexColumn()
 		->make(true);

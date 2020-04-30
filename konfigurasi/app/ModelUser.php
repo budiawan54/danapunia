@@ -13,4 +13,7 @@ class ModelUser extends Model
     public function hakakses(){
     	return $this->hasOne('App\ModelType','id_type','type');
     }
+    public function kelas_siswa(){
+    	return $this->hasOne('App\ModelSiswa','id','id_siswa');
+    }
 }

@@ -230,7 +230,6 @@
                 @foreach($status_tugas as $st)
                 <li class="item">
                     <a href="javascript:void(0)" class="product-title">{{$st->judul_tugas}}
-                     
                     <span class="label @if($st->nama_status == 'Disetujui') label-success @elseif ($st->nama_status == 'Tidak disetujui') label-danger @elseif ($st->nama_status == 'Kurang Lengkap') label-warning @elseif ($st->nama_status == 'Belum diperiksa') label-info @endif pull-right">{{$st->nama_status}}</span>
                     </a>
                     <span class="product-description">

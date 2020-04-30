@@ -87,8 +87,11 @@ class ControllerUser extends Controller
     		$status_tugas= DB::table('list_tugas')
     			->join('tb_tugas','tb_tugas.id_tugas','list_tugas.id_tugas')
     			->join('status','status.id_status','=','list_tugas.status')
+    			->where('id_siswa',Session::get('id_siswa'))
     			->get();
-    		$tugas = DB::table('tb_tugas')->get();
+    		$tugas = DB::table('tb_tugas')
+    			->where('kelas',$siswa->where('id',Session::get('id_siswa'))->first()->kelas)
+    			->get();
     		$jml_tugas = count($tugas);
     		$categories = [];
     		for ($i=1 ; $i<=12 ; $i++){
@@ -126,7 +129,14 @@ class ControllerUser extends Controller
 			$user=ModelUser::where('username',session::get('nama_guru'))->get();
 			$siswa = ModelSiswa::where('kelas', Session::get('akses_siswa'))->get();
 			$jml_siswa = count($siswa);
-            return view('guru.dashboard',compact('user','jml_siswa','siswa'));
+			$status_tugas= DB::table('list_tugas')
+    			->join('tb_tugas','tb_tugas.id_tugas','list_tugas.id_tugas')
+    			->join('status','status.id_status','=','list_tugas.status')
+    			->join('tb_siswa','tb_siswa.id','=','list_tugas.id_siswa')
+    			->where('tb_siswa.kelas',Session::get('akses_siswa'))
+    			->orderByRaw(' list_tugas.created_at DESC')
+    			->get();
+            return view('guru.dashboard',compact('user','jml_siswa','siswa','status_tugas'));
 			
 		}
 	}
@@ -365,6 +375,7 @@ public function proseslogin(Request $request) {
 							Session::put('user',$datauser->username);
 							Session::put('type',$datauser->type);
 							Session::put('id_siswa',$datauser->id_siswa);
+							Session::put('akses_siswa',$datauser->kelas_siswa->kelas);
 							Session::put('loginsiswa', TRUE);
 							Session::put('login',TRUE);
 							return redirect('siswa')->with('alert-success','Selamat Datang'.$datauser->nama);
