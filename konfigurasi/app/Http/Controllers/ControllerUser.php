@@ -98,7 +98,7 @@ class ControllerUser extends Controller
     				->first()){
     				$categories[] = $mp->nama_pelajaran;
     				for ($i=1 ; $i<=10 ; $i++){
-    				$name[$i] = 'ulangan_harian_'.$i;
+    				$name[$i] = 'Ulangan Harian '.$i;
     				$name[11] = 'UTS';
     				$name[12] = 'Ulangan Umum';
 	    			$data[$i][] = $pelajaran->where('kode_mp',$mp->nama_pelajaran)
@@ -111,7 +111,7 @@ class ControllerUser extends Controller
     			}   			
     		}
     		//dd(json_encode($data[1]));
-    		return view('siswa.dashboard',compact('user','siswa','jml_tugas','categories','kode_mp','name','data'));
+    		return view('siswa.dashboard',compact('user','siswa','jml_tugas','categories','kode_mp','name','data','tugas'));
     	}
     }
 

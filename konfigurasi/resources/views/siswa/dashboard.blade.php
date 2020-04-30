@@ -189,6 +189,12 @@
             <div class="box-header">
               <h2 class="box-title">Daftar tugas</h2>
                <div class="box-tools pull-right">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i></button>
+                  <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a href="javascript:void(0)" id="upload-tugas">Upload Tugas</a></li>
+                  </ul>
+                </div>
                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                 </div>
             <div class="box-body table-responsive">
@@ -224,6 +230,41 @@
       </div>
     </div>
       <!-- /.box -->
+      <!--MODAL-->
+<div class="modal fade" id="modal-upload-tugas">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span></button>
+        <center><h4><i class="fa fa-upload"></i> Upload tugas</h4></center>
+      </div>
+      <div class="modal-body">
+        <form id="form-upload-tugas" enctype="multipart/form-data">
+          {{csrf_field()}}
+          <div class="form-group">
+            <label>Pilih tugas:</label>
+            <select class="form-control" id="judul_tugas" name="judul_tugas">
+              @foreach($tugas as $tugas)
+              <option value="{{$tugas->id_tugas}}">{{$tugas->judul_tugas}}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="file" class="form-control" name="file" id="file">
+          </div>
+          <div class="form-group"> 
+            <textarea class="form-control" name="komentar" rows="4" placeholder="Tulis komentar disini..." id="jawaban">{{{ old('deskripsi') }}}</textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-default">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+      <!--END MODAL-->
   </section>
       <!-- /.content -->
     </div>
@@ -249,7 +290,6 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 @include('template.js')
-
 <script>
 $(function(){
   $('#table-tugas-siswa').DataTable({
@@ -390,6 +430,40 @@ var chart = Highcharts.chart('chart', {
                       }]
                   }
 });
+
+  $('#upload-tugas').click(function(){
+    $('.modal').modal('show')
+  })
+  $('#form-upload-tugas').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+          url : '{{route('uploadtugas')}}',
+          type : 'post',
+          data : new FormData(this),
+          contentType : false,
+          processData : false,
+          beforeSend:function(){
+          $('strong.text-danger').remove();
+        },
+          success:function(){
+            alert ('tugas berhasil ditambahkan')
+            $('.modal').modal('hide')
+            $('input').val('')
+            $('textarea').val('')
+        },
+          error: function(xhr){
+          let response = xhr.responseJSON
+          let errors = response.errors
+          if($.isEmptyObject(errors)==false){
+           $.each(errors,function(key,value){
+             var p = $('<strong class="text-danger"></strong>').text(value);
+             $('#'+key).after(p);
+             
+              })
+            }
+        }
+    })
+  })
 })
 </script>
 </body>

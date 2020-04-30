@@ -55,6 +55,7 @@ route::get('jp','ControllerAdmin@dtjadwalpelajaran')->name('dtjp');
 
 //ROUTE SISWA
 Route::get('siswa','ControllerUser@siswa')->name('dashboard-siswa');
+Route::post('/siswa/tugas/store','ControllerSiswa@uploadtugas')->name('uploadtugas');
 
 //ROUTE GURU
 Route::get('guru/gettugas','ControllerGuru@dttugas')->name('dttugas');
