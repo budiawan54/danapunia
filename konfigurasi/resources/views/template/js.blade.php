@@ -372,13 +372,7 @@
         })
       })
       $('#table-tugas').DataTable({
-        serverSide : true,
         processing : true,
-        ajax : '{{route('dttugas')}}',
-        columns:[
-        {data: 'DT_RowIndex'},
-        {data : 'judul_tugas'},
-        ]
       })
       $.fn.editable.defaults.mode = 'popup';
       $('span.label').editable({

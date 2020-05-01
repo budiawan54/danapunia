@@ -37,7 +37,7 @@ class ControllerSiswa extends Controller
     		'id_siswa' => Session::get('id_siswa'),
     		'comment' => $request->komentar,
     		'status' => '4',
-    		'file' => $namafile,
+    		'file_siswa' => $namafile,
     	]);
     }
 }

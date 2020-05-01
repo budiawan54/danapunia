@@ -60,6 +60,8 @@
             <!-- /.box-header -->
             <div class="box-body">
               <ul class="products-list product-list-in-box">
+                @if($jml_stt == 0)
+                <center><b>Belum ada yang upload tugas</b></center>@endif
                 @foreach($status_tugas as $st)
                 <li class="item">
                   <div class="product-img">
@@ -67,11 +69,12 @@
                   </div>
                   <div class="product-info">
                     {{$st->nama_siswa}} :
-                    <a href="javascript:void(0)" class="product-title">{{$st->judul_tugas}}
+                    <a href="{{ url('/storage/file-tugas/'.$st->file_siswa)}}" class="product-title">{{$st->judul_tugas}}</a>
                       <span data-pk='{{$st->id_list}}' class="label @if($st->nama_status == 'Disetujui') label-success @elseif ($st->nama_status == 'Tidak disetujui') label-danger @elseif ($st->nama_status == 'Kurang Lengkap') label-warning @elseif ($st->nama_status == 'Belum diperiksa') label-info @endif pull-right">{{$st->nama_status}}</span>
                     <span class="product-description">
                           {{$st->comment}}
-                        </span>
+                          <span class="pull-right"><i class="fa fa-clock-o"></i> {{date('d-M-Y H:i',strtotime($st->{'Updated_at'}))}}</span>
+                    </span>
                   </div>
                 </li>
                 @endforeach
@@ -110,6 +113,40 @@
                       <th>Label</th>
                     </tr>
                   </thead> 
+                  <tbody>
+                    <?php $i=0; ?>
+                      @foreach($tugas as $tugas)
+                      <?php $i++; ?>
+                    <tr>
+                      <td>{{$i}}</td>
+                      <td>{{$tugas->judul_tugas}}</td>
+                      <td>
+                        <div class="progress progress-xs">
+                          @if ($persentasi[$tugas->judul_tugas] <=40)
+                          <div class="progress-bar progress-bar-danger" style="width: {{$persentasi[$tugas->judul_tugas]}}%"></div>
+                          @elseif ($persentasi[$tugas->judul_tugas]<=65)
+                          <div class="progress-bar progress-bar-yellow" style="width: {{$persentasi[$tugas->judul_tugas]}}%"></div>
+                          @elseif ($persentasi[$tugas->judul_tugas]<=85)
+                          <div class="progress-bar progress-bar-primary" style="width: {{$persentasi[$tugas->judul_tugas]}}%"></div>
+                          @else 
+                          <div class="progress-bar progress-bar-success" style="width: {{$persentasi[$tugas->judul_tugas]}}%"></div>
+                          @endif
+                        </div>
+                      </td>
+                      <td>
+                        @if ($persentasi[$tugas->judul_tugas] <=40)
+                        <span class="badge bg-red">{{$persentasi[$tugas->judul_tugas]}}%</span>
+                        @elseif ($persentasi[$tugas->judul_tugas]<=65)
+                        <span class="badge bg-yellow">{{$persentasi[$tugas->judul_tugas]}}%</span>
+                        @elseif ($persentasi[$tugas->judul_tugas]<=85)
+                        <span class="badge bg-light-blue">{{$persentasi[$tugas->judul_tugas]}}%</span>
+                        @else
+                        <span class="badge bg-green">{{$persentasi[$tugas->judul_tugas]}}%</span>
+                        @endif
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
                 </table>
               </div>
           </div> 

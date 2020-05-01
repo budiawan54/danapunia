@@ -136,7 +136,21 @@ class ControllerUser extends Controller
     			->where('tb_siswa.kelas',Session::get('akses_siswa'))
     			->orderByRaw(' list_tugas.created_at DESC')
     			->get();
-            return view('guru.dashboard',compact('user','jml_siswa','siswa','status_tugas'));
+    		$jml_stt = count($status_tugas);
+    		$tugas = DB::table('tb_tugas')
+    		->where('kelas',Session::get('akses_siswa'))
+    		->get();
+    		$jml_tugas = count($tugas);
+    		foreach ($tugas as $t) {
+    			$id_tugas = DB::table('list_tugas')->where('id_tugas',$t->id_tugas)
+    			->where('status','=','1')
+    			->get();
+    			$jml_id_tugas = count($id_tugas);
+    			$persentasi[$t->judul_tugas] = number_format($jml_id_tugas/$jml_siswa*100);
+    		}
+    		
+    		//dd($persentasi);
+            return view('guru.dashboard',compact('user','jml_siswa','siswa','status_tugas','jml_stt','persentasi','tugas'));
 			
 		}
 	}
