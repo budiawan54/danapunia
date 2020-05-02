@@ -117,7 +117,7 @@ class ControllerUser extends Controller
 	    			->first()->ulangan_umum;
     			}   			
     		}
-    		//dd(json_encode($data[1]));
+    		//dd(Session::get('akses_siswa'));
     		return view('siswa.dashboard',compact('user','siswa','jml_tugas','categories','kode_mp','name','data','tugas','status_tugas'));
     	}
     }

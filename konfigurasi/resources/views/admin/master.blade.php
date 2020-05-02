@@ -36,7 +36,7 @@ desired effect
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <img class="logo-mini" src="{{asset('img/logo.png')}}" alt="logo" style="width: 50px;">
       <!-- logo for regular state and mobile devices -->
-      <img src="{{asset('img/baner.png')}}" class="logo-lg" alt="baner" style="width: 180px">
+      <img src="{{asset('img/img-banner.png')}}" class="logo-lg" alt="baner" style="width: 180px">
     </a>
 
     <!-- Header Navbar -->

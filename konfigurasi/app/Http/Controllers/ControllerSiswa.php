@@ -4,10 +4,59 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use App\ModelPelajaran;
+use App\ModelSiswa;
+use App\ModelUser;
+use App\ModelNilai;
 use Illuminate\Support\Facades\Session;
 class ControllerSiswa extends Controller
 {
     //
+	function tugas(){
+		if(!session::get('loginsiswa')){
+    		return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
+    	} else {
+    	$user=ModelUser::where('username',session::get('nama_siswa'))->get();
+		$siswa=ModelSiswa::where('id',session::get('id_siswa'))->get();
+		$pelajaran = ModelNilai::where('id_siswa',Session::get('id_siswa'))->get();
+		$kode_mp=ModelPelajaran::all();
+		$tugas = DB::table('tb_tugas')
+    			->where('kelas',$siswa->where('id',Session::get('id_siswa'))->first()->kelas)
+    			->get();
+    	$status_tugas= DB::table('list_tugas')
+    			->join('tb_tugas','tb_tugas.id_tugas','list_tugas.id_tugas')
+    			->join('status','status.id_status','=','list_tugas.status')
+    			->where('id_siswa',Session::get('id_siswa'))
+    			->get();
+    	$jml_tugas = count($tugas);
+    	$categories = [];
+    		for ($i=1 ; $i<=12 ; $i++){
+    			$data[$i] = [];
+    			$nama[$i]= ['ulangan harian '.$i];
+    			$nama['11'] = ['UTS'];
+    			$nama['12'] = ['ulangan umum'];
+    		}
+    		foreach ($kode_mp as $mp){
+    			if ($pelajaran->where('kode_mp',$mp->nama_pelajaran)
+    				->first()){
+    				$categories[] = $mp->nama_pelajaran;
+    				for ($i=1 ; $i<=10 ; $i++){
+    				$name[$i] = 'Ulangan Harian '.$i;
+    				$name[11] = 'UTS';
+    				$name[12] = 'Ulangan Umum';
+	    			$data[$i][] = $pelajaran->where('kode_mp',$mp->nama_pelajaran)
+	    			->first()->{'ulangan_harian_'.$i};
+    				}
+    				$data[11][] =$pelajaran->where('kode_mp',$mp->nama_pelajaran)
+	    			->first()->uts;
+	    			$data[12][] =$pelajaran->where('kode_mp',$mp->nama_pelajaran)
+	    			->first()->ulangan_umum;
+    			}   			
+    		}
+    	return view('siswa.tugas',compact('status_tugas','jml_tugas','siswa','user','tugas','categories','kode_mp','pelajaran'));
+    	}
+	}
+
 	function updatestatus(Request $request){
 		$name = $request->get('name');
 		$value = $request->get('value');

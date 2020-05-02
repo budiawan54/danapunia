@@ -249,7 +249,7 @@
 
   
   //PROFIL
-  var type = {{$u->type}};
+  var type = {{Session::get('type')}}
   $('#foto_profil').click(function(){
     if(type==1){
       window.open('{{route('profil')}}','_self')

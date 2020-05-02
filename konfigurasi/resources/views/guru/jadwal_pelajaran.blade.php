@@ -148,23 +148,22 @@
               </div>	
             </div>
             <!-- /.box-header -->
-            
             <div class="box-body table-responsive">
               <table class="table  table-striped table-bordered" id="table_jadwal_pelajaran" style="width: 100%">
                 <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Hari/Tanggal</th>
-                  <th>Kelas</th>
-                  <th>Jam Pelajaran</th>
-                  <th>Mata Pelajaran</th>
-                  <th>Jam Mulai</th>
-                  <th>Jam Selesai</th>
-                  <th>Nama Pengajar</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-            </table>
+                	<tr>
+                  		<th>No</th>
+                  		<th>Hari/Tanggal</th>
+                  		<th>Kelas</th>
+                  		<th>Jam Pelajaran</th>
+                  		<th>Mata Pelajaran</th>
+                  		<th>Jam Mulai</th>
+                  		<th>Jam Selesai</th>
+                  		<th>Nama Pengajar</th>
+                  		<th>Aksi</th>
+                	</tr>
+              	</thead>
+              </table>
             </div>
             </div>
             <!-- /.box-body -->
