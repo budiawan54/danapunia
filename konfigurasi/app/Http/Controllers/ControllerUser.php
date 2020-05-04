@@ -25,8 +25,6 @@ class ControllerUser extends Controller
 		return Dataables::of(ModelUser::all())->make(true);
 	}
 
-	
-
     public function profil() {
         if(!Session::get('loginguru')) {
              return redirect('login')->with('alert-error','Silakan login terlebih dahulu');
@@ -35,7 +33,6 @@ class ControllerUser extends Controller
             return view('guru.profil',compact('user'));
         }
         }
-
 	public function status() {
     	if(!Session::get('loginadmin')) {
         	return redirect('login')->with('alert-error','silakan login terlebih dahulu');
@@ -134,6 +131,7 @@ class ControllerUser extends Controller
     			->join('status','status.id_status','=','list_tugas.status')
     			->join('tb_siswa','tb_siswa.id','=','list_tugas.id_siswa')
     			->where('tb_siswa.kelas',Session::get('akses_siswa'))
+    			->whereIn('list_tugas.status',[4,3])
     			->orderByRaw(' list_tugas.created_at DESC')
     			->get();
     		$jml_stt = count($status_tugas);

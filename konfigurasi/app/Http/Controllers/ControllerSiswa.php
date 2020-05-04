@@ -12,6 +12,66 @@ use Illuminate\Support\Facades\Session;
 class ControllerSiswa extends Controller
 {
     //
+    function loadabsensi(){
+        $absensi= DB::table('absensi_siswa')
+        ->where('id_siswa',Session::get('id_siswa'))->get();
+        foreach ($absensi as $abs){
+            if ($abs->ket_absensi == 1){
+                $data[] = array(
+                'title' => 'absensi',
+                'start' => $abs->tanggal,
+                'rendering' => 'background',
+                'color' => '#00c0ef'
+                 );
+                }
+            if ($abs->ket_absensi == 2){
+                $data[] = array(
+                'title' => 'absensi',
+                'start' => $abs->tanggal,
+                'rendering' => 'background',
+                'color' => '#dd4b39'
+                 );
+                }
+            if ($abs->ket_absensi == 3){
+                $data[] = array(
+                'title' => 'absensi',
+                'start' => $abs->tanggal,
+                'rendering' => 'background',
+                'color' => '#00a65a !important'
+                 );
+                }
+            if ($abs->ket_absensi == 4){
+                $data[] = array(
+                'title' => 'absensi',
+                'start' => $abs->tanggal,
+                'rendering' => 'background',
+                'color' => '#f39c12 !important'
+                 );
+                }  
+            if ($abs->ket_absensi == 5){
+                $data[] = array(
+                'title' => 'absensi',
+                'start' => $abs->tanggal,
+                'rendering' => 'background',
+                'color' => '#d2d6de'
+                 );
+                }    
+        }
+       echo json_encode($data);
+    }
+
+    function absensi(){
+    	if(!session::get('loginsiswa')){
+    		return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
+    	} else {
+    		$siswa=ModelSiswa::where('id',session::get('id_siswa'))->get();
+    		$tugas = DB::table('tb_tugas')
+    			->where('kelas',$siswa->where('id',Session::get('id_siswa'))->first()->kelas)
+    			->get();
+    		$jml_tugas = count($tugas);
+    		return view('siswa.absensi',compact('siswa','jml_tugas'));
+    	}
+    }
 	function tugas(){
 		if(!session::get('loginsiswa')){
     		return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');

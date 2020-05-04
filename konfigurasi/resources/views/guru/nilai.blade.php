@@ -238,29 +238,6 @@
 $(function(){
     $('#table-tugas-siswa').DataTable({
       processing: true,
-      serverSide: true,
-      ajax : '{{route('dttugas')}}',
-      columns:[
-      {data : 'DT_RowIndex'},
-      {data : 'judul_tugas'},
-      {data : 'deskripsi',orderable: false},
-      {data: 'file',
-            render: function(data, type, full, meta){
-              if (data != null){
-              return "<a href='{{ url('/storage/file-tugas')}}/"+data+"'/>"+data+"</a>";
-              }
-              return '<span class="label label-danger">Tidak ada file</span>';
-            },
-            orderable: false
-        },
-        {data :'status', orderable:false,
-            render : function(data, type, full, meta){
-              if (data == 4){
-                return '<span class="label label-danger">Belum melakukan apapun</span>';
-              }
-            }
-        }
-      ]
     })
 
     var id = $('#nomor_id').text();

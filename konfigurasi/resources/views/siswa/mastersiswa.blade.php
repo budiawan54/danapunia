@@ -4,7 +4,6 @@
 <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
 <body class="hold-transition skin-blue layout-top-nav">
 <div class="wrapper">
-@foreach ($user as $u)@endforeach
   <header class="main-header">
     <nav class="navbar navbar-static-top">
       <div style="padding-left: 10px; padding-right: 5px">
@@ -19,7 +18,7 @@
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="/siswa">Beranda</a></li>
-            <li><a href="#">Absensi</a></li>
+            <li><a href="{{route('absensi_siswa')}}">Absensi</a></li>
             <li><a href="">Kalender Acara</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
@@ -163,6 +162,22 @@
 @include('template.js')
 <script type="text/javascript">
 $(function(){
+  $('#calender-siswa').fullCalendar({
+    header    : {
+        left  : 'prev,next today',
+        center: 'title'
+      },
+      events    : '{{route('loadabsensi')}}',
+      eventRender: function(eventObj, $el) {
+       $el.popover({
+        title: eventObj.title,
+        content: eventObj.description,
+        trigger: 'hover',
+        placement: 'top',
+        container: 'body'
+       });
+      },
+  })
   $('#cek-tugas').click(function(){
     $('.status-tugas').removeClass('hidden')
   })
