@@ -12,22 +12,6 @@
 @section('main-content')
     <!-- Main content -->
     <section class="content container-fluid">
-@if(Session::has('alert-success'))<div class="container">
-          <div class="box box-default">
-            <div class="box-header with-border">
-              <i class="fa fa-bullhorn"></i>
-
-              <h3 class="box-title">{{Session::get('alert-success')}}</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="callout callout-danger">
-                <h4>Lihat batas pendaftaran siswa di situs resmi <a href="">SD Dana Punia Singaraja</a> sebelum terlambat.</h4>
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-        </div>@endif
         <!-- /.carousel -->
         <div class="row">
         <div class="col-md-6">
@@ -67,20 +51,29 @@
 
                 <p>Klik tombol unggah di bawah ini untuk mengunggah file pendaftaran!!!.</p>
               </div>
-              <form action="{{route('uploadfile')}}" method="post" enctype="multipart/form-data">
-                <div class="form-group">
+              <form action="{{route('uploaddata')}}" method="post" enctype="multipart/form-data" id="upload-data">
+              {{csrf_field()}}  
+              <div class="form-group">
                   <label>Alasan memilih SD Dana Punia Singaraja :</label>
-                  <textarea class="form-control" name="alasan" id="alasan" rows="5" placeholder="Deskripsikan secara singkat...."></textarea>
+                  <textarea class="form-control" name="alasan" id="alasan" rows="5" placeholder="Deskripsikan secara singkat....">{{old('alasan')}}</textarea>
+                  @if($errors->has('alasan'))<strong class="text-danger">{{$errors->first('alasan')}}</strong>@endif
+                </div>
+                <div class="form-group">
+                  <label for="">No. Telp/Hp/Whatsapp :</label>
+                  <input type="number" name='telp' id="telp" class="form-control" max="13" value="{{old('telp')}}">
+                  @if($errors->has('telp'))<strong class="text-danger">{{$errors->first('telp')}}</strong>@endif
+                  <p>Silakan masukkan nomor hp yang bisa dihubungi atau terus cek situs ini untuk pemberitahuan status pendaftaran selanjutnya!</p>
                 </div>
                 <div class="form-group">
                   <div class="btn btn-default btn-file">
                     <i class="fa fa-paperclip"></i>
                     <input type="file" name="formulir" id="formulir">
                   </div> <strong id="preview"></strong>
+                  @if($errors->has('formulir'))<strong class="text-danger">{{$errors->first('formulir')}}</strong>@endif
                   <p>* Maksimal ukuran file adalah 32MB</p>
                 </div>
                  <center>
-                  <a class="btn btn-app" type='submit'>
+                  <a class="btn btn-app" type='submit' onclick="$('#upload-data').submit()">
                     <i class="fa fa-cloud-upload">
                     </i>Unggah
                   </a>
@@ -169,3 +162,6 @@
     </section>
     <!-- /.content -->
 @endsection
+<script>
+  console.log({{Session::get('id_user')}});
+</script>

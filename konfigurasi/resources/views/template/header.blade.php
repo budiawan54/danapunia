@@ -34,7 +34,7 @@
   <link href="{{asset('bower_components/bootstrap-editable/css/bootstrap-editable.css')}}" rel="stylesheet">
   <!--Icheck-->
   <link href="{{asset('plugins/iCheck/all.css')}}" rel="stylesheet">
-
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 
 
 

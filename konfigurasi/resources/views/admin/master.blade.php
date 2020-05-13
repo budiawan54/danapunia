@@ -155,22 +155,6 @@ desired effect
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     @yield('content-header')
-    @if(Session::has('alert-success'))
-    <div class="container">
-      <div class="box box-widget">
-        <div class="box-header">
-        <h4><center><i class="fa fa-bullhorn"></i> {{Session::get('alert-success')}}</center></h4>
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-        </div>
-        </div>
-      </div>
-    </div>
-    @endif
-    @if(Session::has('errors'))
-  <div class="container alert alert-error"><h4><center><i class="fa fa-lg fa-ban"></i> Mohon periksa kembali data yang diinput!</center></h4>
-  </div>
-  @endif
     @yield('main-content')
   </div>
   <!-- /.content-wrapper -->

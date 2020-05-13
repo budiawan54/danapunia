@@ -29,15 +29,24 @@
 <script src="{{asset('bower_components/bootstrap-editable/js/bootstrap-editable.js')}}"></script>
 <!-- iCheck 1.0.1 -->
 <script src="{{asset('plugins/iCheck/icheck.min.js')}}"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 
 <script type="text/javascript">
+toastr.options = {
+  "closeButton": true,
+  "positionClass": "toast-bottom-full-width",
+}
+  @if(Session::has('alert-success'))
+    toastr.info("{{Session::get('alert-success')}}");
+  @endif
+  @if(Session::has('errors'))
+    toastr.error("Mohon periksa kembali data yang diinput");
+  @endif
   $(document).ajaxStart(function() {
             Pace.restart()
         })
   //DATATABLES 
   $(function () {
-
     $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'

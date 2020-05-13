@@ -22,9 +22,8 @@ Route::get('/logout', 'ControllerUser@keluar')->name('logout');
 
 //ROUTE PENDAFTAR
 Route::get('/userbaru', 'ControllerUser@userbaru')->name('pendaftar');
-Route::get('/userbaru/input-data', function(){
-	return view('userbaru.data-diri');
-});
+Route::post('/userbaru/input-data', 'ControllerUser@uploaddata')->name('uploaddata');
+
 
 //ROUTE ADMIN
 Route::post('/admin/pendaftar/upload-file','ControllerAdmin@uploadfile')->name('uploadfile');

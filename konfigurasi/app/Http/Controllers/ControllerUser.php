@@ -21,6 +21,30 @@ class ControllerUser extends Controller
 {
     //
 
+	function uploaddata(Request $request){
+		$pesan = [
+			'required' => 'Wajib diisi',
+            'mimes' => 'File harus bertipe pdf',
+            'max' => 'Ukuran file tidak boleh lebih dari 32MB'
+		];
+		$this->validate($request,[
+			'alasan' => 'required',
+			'formulir'=> 'required|mimes:pdf,doc,docx,png,jpeg|max:32768',
+			'telp' => 'required'
+		],$pesan);
+		
+		$formulir = $request->file('formulir');
+        $namaformulir = $formulir->getClientOriginalName();
+        $folder = 'storage/file-pendaftar';
+        $formulir->move($folder, $namaformulir);
+		DB::table('tb_pendaftar')->insert([
+			'id_user' => Session::get('id_user'),
+			'file_pendaftar' => $namaformulir,
+			'no_hp' => $request->telp,
+			'alasan' => $request->alasan,
+		]);
+		return back()->with('alert-success','Data berhasil diupload silakan pantau terus status pendaftaranmu');
+	}
 	
 	public function json() {
 		return Dataables::of(ModelUser::all())->make(true);
@@ -422,6 +446,7 @@ public function proseslogin(Request $request) {
 				Session::put('nama_user',$datauser->username);
 				Session::put('user',$datauser->username);
 				Session::put('type',$datauser->type);
+				Session::put('id_user',$datauser->id);
 				Session::put('loginuser', TRUE);
 				Session::put('login',TRUE);
 				return redirect('userbaru')->with('alert-success','Selamat Datang '.$datauser->nama);
@@ -430,6 +455,7 @@ public function proseslogin(Request $request) {
 					Session::put('nama_admin',$datauser->username);
 					Session::put('user',$datauser->username);
 					Session::put('type',$datauser->type);
+					Session::put('id_user',$datauser->id);
 					Session::put('loginadmin',TRUE);
 					Session::put('login',TRUE);
 					return redirect('admin')->with('alert-success','Selamat Datang '.$datauser->nama);
@@ -438,7 +464,7 @@ public function proseslogin(Request $request) {
 						Session::put('nama_guru',$datauser->username);
 						Session::put('user',$datauser->username);
 						Session::put('type',$datauser->type);
-						Session::get('id_user',$datauser->id);
+						Session::put('id_user',$datauser->id);
 						Session::put('akses_siswa',$datauser->akses_siswa);
 						Session::put('loginguru', TRUE);
 						Session::put('login',TRUE);
@@ -448,6 +474,7 @@ public function proseslogin(Request $request) {
 							Session::put('nama_siswa',$datauser->username);
 							Session::put('user',$datauser->username);
 							Session::put('type',$datauser->type);
+							Session::put('id_user',$datauser->id);
 							Session::put('id_siswa',$datauser->id_siswa);
 							Session::put('akses_siswa',$datauser->kelas_siswa->kelas);
 							Session::put('loginsiswa', TRUE);
