@@ -47,61 +47,6 @@ class ControllerNilai extends Controller
       $idpelajaran = ModelNilai::where('id_siswa',$id)->first();
       $hitung_kode_pelajaran = count($kode_pelajaran);
       $hitung_id_siswa= count($id_siswa);
-      if ($hitung_id_siswa == 0) {
-         if($hitung_kode_pelajaran == 0 ) {
-            ModelNilai::create([
-               'id_siswa' => $id,
-               'kode_mp' => $kode_mp,
-               'ulangan_umum'=>$request->input('ulu'),
-               'ulangan_harian_1' =>$request->input('ulh1'),
-               'ulangan_harian_2' =>$request->input('ulh2'),
-               'ulangan_harian_3' =>$request->input('ulh3'),
-               'ulangan_harian_4' =>$request->input('ulh4'),
-               'ulangan_harian_5' =>$request->input('ulh5'),
-               'ulangan_harian_6' =>$request->input('ulh6'),
-               'ulangan_harian_7' =>$request->input('ulh7'),
-               'ulangan_harian_8' =>$request->input('ulh8'),
-               'ulangan_harian_9' =>$request->input('ulh9'),
-               'ulangan_harian_10' =>$request->input('ulh10'),
-               'uts' =>$request->input('uts'),
-            ]);
-         } else {
-            ModelNilai::create([
-               'id_siswa' => $id,
-               'kode_mp' => $kode_mp,
-               'ulangan_umum'=>$request->input('ulu'),
-               'ulangan_harian_1' =>$request->input('ulh1'),
-               'ulangan_harian_2' =>$request->input('ulh2'),
-               'ulangan_harian_3' =>$request->input('ulh3'),
-               'ulangan_harian_4' =>$request->input('ulh4'),
-               'ulangan_harian_5' =>$request->input('ulh5'),
-               'ulangan_harian_6' =>$request->input('ulh6'),
-               'ulangan_harian_7' =>$request->input('ulh7'),
-               'ulangan_harian_8' =>$request->input('ulh8'),
-               'ulangan_harian_9' =>$request->input('ulh9'),
-               'ulangan_harian_10' =>$request->input('ulh10'),
-               'uts' =>$request->input('uts'),
-            ]);
-         }
-      } else {
-         if($hitung_kode_pelajaran==0){
-            ModelNilai::create([
-               'id_siswa' => $id,
-               'kode_mp' => $kode_mp,
-               'ulangan_umum'=>$request->input('ulu'),
-               'ulangan_harian_1' =>$request->input('ulh1'),
-               'ulangan_harian_2' =>$request->input('ulh2'),
-               'ulangan_harian_3' =>$request->input('ulh3'),
-               'ulangan_harian_4' =>$request->input('ulh4'),
-               'ulangan_harian_5' =>$request->input('ulh5'),
-               'ulangan_harian_6' =>$request->input('ulh6'),
-               'ulangan_harian_7' =>$request->input('ulh7'),
-               'ulangan_harian_8' =>$request->input('ulh8'),
-               'ulangan_harian_9' =>$request->input('ulh9'),
-               'ulangan_harian_10' =>$request->input('ulh10'),
-               'uts' =>$request->input('uts'),
-            ]);
-         } else {
             if($kode_pelajaran->where('id_siswa',$id)->first()){
                if($kode_pelajaran->where('id_siswa',$id)->first()->kode_mp == $kode_mp){
                      $this->validate($request,[
@@ -126,8 +71,6 @@ class ControllerNilai extends Controller
                      'uts' =>$request->input('uts'),
                   ]);
                }   
-         }
-      } 
    }
 
    public function updatenilai(Request $request){

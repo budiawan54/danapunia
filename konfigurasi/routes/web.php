@@ -27,6 +27,8 @@ Route::get('/userbaru/input-data', function(){
 });
 
 //ROUTE ADMIN
+Route::post('/admin/pendaftar/upload-file','ControllerAdmin@uploadfile')->name('uploadfile');
+Route::post('ubah-pwd','ControllerUser@ubahpwd')->name('ubah-pwd');
 Route::get('/admin', 'ControllerUser@admin')->name('dashboard');
 Route::get('/admin/status', 'ControllerUser@status')->name('status');
 Route::get('/admin/pengguna','ControllerUser@pengguna')->name('pengguna');
@@ -54,6 +56,9 @@ route::get('jp','ControllerAdmin@dtjadwalpelajaran')->name('dtjp');
 /*route::get('dtjp','ControllerAdmin@loadjadwalpelajaran')->name('loaddtjp');*/
 
 //ROUTE SISWA
+Route::get('siswa/event',function(){
+	return view('');
+});
 Route::get('siswa/absensi/load','ControllerSiswa@loadabsensi')->name('loadabsensi');
 Route::get('siswa/absensi','ControllerSiswa@absensi')->name('absensi_siswa');
 Route::get('siswa/tugas','ControllerSiswa@tugas')->name('tugas');

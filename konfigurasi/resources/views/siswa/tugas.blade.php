@@ -85,7 +85,7 @@
           {{csrf_field()}}
           <div class="form-group">
             <label>Pilih tugas:</label>
-            <select class="form-control" id="judul_tugas" name="judul_tugas">
+            <select class="form-control" id="id_tugas" name="id_tugas">
               @foreach($tugas as $tugas)
               <option value="{{$tugas->id_tugas}}">{{$tugas->judul_tugas}}</option>
               @endforeach

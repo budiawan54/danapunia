@@ -18,7 +18,8 @@
 <script src="{{asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('plugins/summernote/js/summernote.js')}}"></script>
 <!-- fullCalendar -->
-<script src="{{asset('bower_components/moment/moment.js')}}"></script>
+<script src="{{asset('bower_components/moment/min/moment.min.js')}}"></script>
+<script src="{{asset('bower_components/moment/min/locales.min.js')}}"></script>
 <script src="{{asset('bower_components/fullcalendar/dist/fullcalendar.min.js')}}"></script>
 <!-- bootstrap color picker -->
 <script src="{{asset('bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')}}"></script>
@@ -67,7 +68,7 @@
         {data:'action', name:'action', orderable:false },
       ]
     });
-
+    $('#table_pengguna').DataTable();
     $('#table_absensi').DataTable({
       processing:true,
       serverSide:true,
@@ -283,7 +284,6 @@
       $('#li_user').attr('class','active');
       $('title').text('Data Pengguna');
       $('#li_siswa, #li_nilai_siswa, #li_abs').remove();
-
       $('input[type="radio"][value="3"]').click(function(){
         $('#hakakses').attr('style','display:none')
         $('#link-to').attr('style','')
@@ -294,6 +294,53 @@
       })
       $('input[type="radio"][value="1"]').click(function(){
         $('#link-to, #hakakses').attr('style','display:none')
+      })
+      $('.btn-edit').click(function(){
+      $('#edit').modal('show');
+      var id = $(this).attr('id');
+      var nama = $(this).attr('data-nama');
+      $('strong#nama').text(nama);
+      $('input#id').val(id); 
+      $('input#pwd').val('');
+      $('strong.text-danger').remove()
+      })
+      $('.fm-ubah-pwd').submit(function(e){
+          e.preventDefault();
+          $.ajax({
+            url : '{{route('ubah-pwd')}}',
+            method : 'post',
+            data : $(this).serialize(),
+            beforeSend : function(){
+              $('strong.text-danger').remove()
+            },
+            success:function(){
+            $('#edit').modal('hide');
+            // $('.container').removeAttr('style');
+            alert('Password berhasil diperbarui')
+            },
+            error: function(xhr){
+            let response = xhr.responseJSON
+            let errors = response.errors
+            if($.isEmptyObject(errors)==false){
+            $.each(errors,function(key,value){
+              var p = $('<strong class="text-danger"></strong>').text(value);
+              $('#'+key).after(p);
+              
+                })
+              }
+              console.log(id)
+            }
+          })
+      })
+      $('.btn-add-user').click(function(){
+        $('.box-fm-pengguna').removeAttr('style')
+        $(this).attr('style','display:none')
+        $('.rw-daftar-pengguna').attr('style','display:none')
+      })
+      $('.fa-eye').click(function(){
+        $('.box-fm-pengguna').removeAttr('style')
+        $('.rw-daftar-pengguna').attr('style','display:none')
+        $('.btn-add-user').attr('style','display:none')
       })
       break;
       case '/admin/extra':
@@ -399,6 +446,10 @@
       $('#foto_profil').attr('href','javascript:void(0)');      
       $('title').text('Dashboard');
       $('#li_stts, #li_prf, #li_emplo, #li_user, #li_xtr, #li_kgt, #li_prt, #li_siswa, #li_nilai_siswa, #li_pelajaran, #li_cal').remove();
+      $('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        $('#preview').text(fileName);
+      })
       break;
       case '/guru/siswa':
       $('#li_siswa').attr('class','active');
@@ -900,7 +951,6 @@ $(document).on('click','.btn-del',function(){
             data : {id:id},
             success:function(){
               $('.modal').modal('hide')
-              alert('data absensi berhasil dihapus');
               $('#table_absensi').DataTable().ajax.reload();
             }
           })

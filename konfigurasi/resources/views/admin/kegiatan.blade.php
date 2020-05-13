@@ -14,11 +14,7 @@
 
 @section('main-content')
 <section class="content">
-  @if(Session::has('alert-success'))<div class="container alert alert-success"><h4><center><i class="fa fa-lg fa-check"></i>{{Session::get('alert-success')}}</center></h4></div>@endif
-  @if($errors->has('nama_kegiatan') || $errors->has('tanggal_kegiatan') || $errors->has('deskripsi_kegiatan') || $errors->has('foto'))
-              <div class="container alert alert-error"><h4><center><i class="fa fa-lg fa-ban"></i> Mohon periksa kembali data yang diinput!</center></h4>
-              </div>
-              @endif
+  
     <!--ALERT SUCCESS-->
     <div id="alert-success" class="container hidden alert alert-success"><h4><center><i class="fa fa-lg fa-check"></i>Data Kegiatan berhasil diperbarui</center></h4></div>
     <!--END ALERT SUCCESS-->

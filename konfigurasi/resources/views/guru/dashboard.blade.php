@@ -15,7 +15,6 @@
           <div class="box box-default">
             <div class="box-header with-border">
               <i class="fa fa-bullhorn"></i>
-
               <h3 class="box-title">{{Session::get('alert-success')}}</h3>
             </div>
             <!-- /.box-header -->
@@ -39,56 +38,97 @@
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
+            <a href="#" class="small-box-footer">Selengkapnya <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3>{{$jml_siswa}} %</h3>
+              <p>Tugas terselesaikan</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="#" class="small-box-footer">Selengkapnya <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-blue">
+            <div class="inner">
+              <h3>{{count($status_tugas->where('status','1'))}}</h3>
+              <p>Siswa selesai mengerjakan tugas</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-check-square-o"></i>
+            </div>
+            <a href="#" class="small-box-footer">Selengkapnya <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>{{count($status_tugas->where('status','4'))}}</h3>
+              <p>Siswa belum selesai mengerjakan tugas</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-minus-square"></i>
+            </div>
+            <a href="#" class="small-box-footer">Selengkapnya <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- /.col -->
       </div>
       <!-- /.row -->
       <div class="row">
-        <div class="col-sm-4">
-           <!-- TUGAS LIST -->
-          <div class="box box-primary">
-            <div class="box-header with-border">
+        <div class="col-sm-8">
+          <div class="box box-warning">
+            <div class="box box-header">
               <h3 class="box-title">Laporan tugas siswa terbaru</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="box-body">
+            <div class="direct-chat-messages">
+            @if($jml_stt == 0)
+                <center><h1 style="margin:250px 250px"><i class="fa fa-warning"></i><br/>Belum ada yang upload tugas</h1></center>@endif
+                <ul class="timeline">
+                  <!-- timeline time label -->
+                  @foreach ($status_tugas as $sttugas)
+                  <li class="time-label">
+                        <span class="bg-red">
+                        {{date('d M Y',strtotime($sttugas->Updated_at))}}
+                        </span>
+                  </li>
+                  <!-- /.timeline-label -->
+                  <!-- timeline item -->
+                  <li>
+                    <i class="fa fa-user bg-blue"></i>
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> {{date('H:i',strtotime($sttugas->{'Updated_at'}))}}</span>
+                      <h3 class="timeline-header"><strong>{{$sttugas->nama_siswa}}</strong>  telah mengupload tugas <a href='{{ url('/storage/file-tugas/'.$sttugas->file_siswa)}}'>{{$sttugas->judul_tugas}}</a></h3>
+                      <div class="timeline-body">
+                        {{$sttugas->comment}}
+                      </div>
+                      <div class="timeline-footer">
+                        <a class="btn btn-primary btn-xs" href="{{ url('/storage/file-tugas/'.$sttugas->file_siswa)}}">Lihat Data</a>
+                        <a class="btn btn-info btn-xs" data-pk='{{$sttugas->id_list}}' data-name = '{{$sttugas->id_siswa}}'>Terima</a>
+                        <a class="btn btn-danger btn-xs" data-pk='{{$sttugas->id_list}}' data-name = '{{$sttugas->id_siswa}}'>Tolak</a>
+                        <a class="btn btn-warning btn-xs" data-pk ='{{$sttugas->id_list}}' data-name = '{{$sttugas->id_siswa}}'>Minta Perbaikan</a>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- END timeline item -->
+                  @endforeach
+                </ul>
               </div>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <ul class="products-list product-list-in-box">
-                @if($jml_stt == 0)
-                <center><b>Belum ada yang upload tugas</b></center>@endif
-                @foreach($status_tugas as $st)
-                <li class="item">
-                  <div class="product-img">
-                    <img src="{{url('/foto_siswa/'.$st->student_photos)}}" alt="Product Image">
-                  </div>
-                  <div class="product-info">
-                    {{$st->nama_siswa}} :
-                    <a href="{{ url('/storage/file-tugas/'.$st->file_siswa)}}" class="product-title">{{$st->judul_tugas}}</a>
-                      <span data-pk='{{$st->id_list}}' class="label @if($st->nama_status == 'Disetujui') label-success @elseif ($st->nama_status == 'Tidak disetujui') label-danger @elseif ($st->nama_status == 'Kurang Lengkap') label-warning @elseif ($st->nama_status == 'Belum diperiksa') label-info @endif pull-right">{{$st->nama_status}}</span>
-                    <span class="product-description">
-                          {{$st->comment}}
-                          <span class="pull-right"><i class="fa fa-clock-o"></i> {{date('d-M-Y H:i',strtotime($st->{'Updated_at'}))}}</span>
-                    </span>
-                  </div>
-                </li>
-                @endforeach
-              </ul>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer text-center">
-              <a href="javascript:void(0)" class="uppercase">Lihat semua data</a>
-            </div>
-            <!-- /.box-footer -->
           </div>
-          <!-- /.box -->
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <div class="box box-primary">
             <div class="box-header">
               <h2 class="box-title">Daftar tugas</h2>

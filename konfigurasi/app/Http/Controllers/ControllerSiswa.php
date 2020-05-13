@@ -9,6 +9,7 @@ use App\ModelSiswa;
 use App\ModelUser;
 use App\ModelNilai;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Carbon;
 class ControllerSiswa extends Controller
 {
     //
@@ -64,18 +65,28 @@ class ControllerSiswa extends Controller
     	if(!session::get('loginsiswa')){
     		return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
     	} else {
+            $notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
     		$siswa=ModelSiswa::where('id',session::get('id_siswa'))->get();
     		$tugas = DB::table('tb_tugas')
     			->where('kelas',$siswa->where('id',Session::get('id_siswa'))->first()->kelas)
     			->get();
     		$jml_tugas = count($tugas);
-    		return view('siswa.absensi',compact('siswa','jml_tugas'));
+    		return view('siswa.absensi',compact('siswa','jml_tugas','notif'));
     	}
     }
 	function tugas(){
 		if(!session::get('loginsiswa')){
     		return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
     	} else {
+        $notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
     	$user=ModelUser::where('username',session::get('nama_siswa'))->get();
 		$siswa=ModelSiswa::where('id',session::get('id_siswa'))->get();
 		$pelajaran = ModelNilai::where('id_siswa',Session::get('id_siswa'))->get();
@@ -113,7 +124,7 @@ class ControllerSiswa extends Controller
 	    			->first()->ulangan_umum;
     			}   			
     		}
-    	return view('siswa.tugas',compact('status_tugas','jml_tugas','siswa','user','tugas','categories','kode_mp','pelajaran'));
+    	return view('siswa.tugas',compact('status_tugas','jml_tugas','siswa','user','tugas','categories','kode_mp','pelajaran','notif'));
     	}
 	}
 
@@ -124,16 +135,25 @@ class ControllerSiswa extends Controller
 		DB::table('list_tugas')->where('id_list',$id)->update([
 				'status' => $value
 			]);
+        $id_list = DB::table('list_tugas')->where('id_list',$id)->first();
+        DB::table('notifikasi')->insert([
+            'id_tugas' =>$id_list->id_tugas,
+            'id_siswa' => $name,
+            'category' => 're-tugas',
+            'pesan' => 'Status baru untuk',
+            'read' => 0,
+        ]);
 	}
 
     function uploadtugas(Request $request){
     	$pesan = [
     		'required' => 'Wajib diisi',
     		'mimes' => 'format file yang didukung adalah pdf, doc, docx, dan txt',
-    		'max' => 'maksimal file adalah :max'
+    		'max' => 'maksimal file adalah :max',
+            'unique' => 'Maaf kamu sudah mengupload tugas ini, silakan cek status tugasmu' 
     	];
     	$this->validate($request,[
-    		'file' => 'required|mimes:pdf,doc,docx,txt|file|max:5000'
+    		'file' => 'required|mimes:pdf,doc,docx,txt|file|max:5000',
     	],$pesan);
 
     	$file = $request->file('file');
@@ -141,12 +161,32 @@ class ControllerSiswa extends Controller
 				$folder = 'storage/file-tugas';
 				$file->move($folder,$namafile);
 
-    	DB::table('list_tugas')->insert([
-    		'id_tugas' => $request->judul_tugas,
-    		'id_siswa' => Session::get('id_siswa'),
-    		'comment' => $request->komentar,
-    		'status' => '4',
-    		'file_siswa' => $namafile,
-    	]);
+        
+        $id_tugas = $request->id_tugas;
+        $id_siswa = Session::get('id_siswa');
+        $siswa = DB::table('list_tugas')->where('id_siswa',$id_siswa)->get();
+        $tugas = DB::table('list_tugas')->where('id_tugas',$id_tugas)->get();
+        if($tugas->where('id_siswa',$id_siswa)->first()){
+            if($tugas->where('id_siswa',$id_siswa)->first()->id_tugas == $id_tugas){
+                $this->validate($request,[
+                     'id_tugas' => 'unique:list_tugas,id_tugas'
+                     ],$pesan);
+            }
+        } else {
+    	   DB::table('list_tugas')->insert([
+    		  'id_tugas' => $id_tugas,
+    		  'id_siswa' => $id_siswa,
+    		  'comment' => $request->komentar,
+    		  'status' => '4',
+    		  'file_siswa' => $namafile,
+    	   ]);
+            DB::table('notifikasi')->insert([
+                'id_tugas' => $request->judul_tugas,
+                'id_siswa' => Session::get('id_siswa'),
+                'category' => 'up-tugas',
+                'pesan' => 'telah mengupload tugas',
+                'read' => 0,
+            ]);
+        }
     }
 }

@@ -52,8 +52,13 @@ class KegiatanController extends Controller
     		return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
     	} else {
     		$kegiatan=ModelKegiatan::all();
-            $user=ModelUser::where('username',Session::get('nama_admin'))->get();
-    		return view('admin.kegiatan',compact('kegiatan','user'));
+			$user=ModelUser::where('username',Session::get('nama_admin'))->get();
+			$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+    		return view('admin.kegiatan',compact('kegiatan','user','notif'));
     	}
     }
     public function proseskegiatan(Request $request) {

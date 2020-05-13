@@ -36,7 +36,7 @@ desired effect
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <img class="logo-mini" src="{{asset('img/logo.png')}}" alt="logo" style="width: 50px;">
       <!-- logo for regular state and mobile devices -->
-      <img src="{{asset('img/img-banner.png')}}" class="logo-lg" alt="baner" style="width: 180px">
+      <img src="{{asset('img/baner.png')}}" class="logo-lg" alt="baner" style="width: 180px">
     </a>
 
     <!-- Header Navbar -->
@@ -48,6 +48,48 @@ desired effect
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+           <!-- Notifications Menu -->
+           <li class="dropdown messages-menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-bell-o"></i>
+                @if(count($notif)>0)
+                <span class="label label-warning">{{count($notif->where('category','up-tugas'))}}</span>
+                @endif
+              </a>
+              <ul class="dropdown-menu">
+                @if(count($notif)>0 )
+                <li class="header">Kamu Punya {{count($notif->where('category','up-tugas'))}} pemberitahuan</li>
+                @else
+                <li class="header">Tidak ada pemberitahuan </li>
+                @endif
+                <li>
+                  <!-- inner menu: contains the actual data -->
+                  <ul class="menu">
+                    @foreach ($notif as $notif)
+                    @if ($notif->category == 'up-tugas')
+                    <li>
+                    <!-- start message -->
+                      <a onclick="document.getElementById('form-id').submit()">
+                        <form id="form-id" action="/guru/{{$notif->id_siswa}}/nilai" method="post">
+                          {{csrf_field()}}
+                          {{method_field('put')}}
+                        </form>
+                        <div class="pull-left">
+                          <img src="{{url('/foto_siswa/'.$notif->student_photos)}}" class="img-circle" alt="User Image">
+                        </div>
+                        <h4>{{$notif->nama_siswa}}
+                          <small><i class="fa fa-clock-o"></i> {{$notif->Updated_At}}</small>
+                        </h4>
+                        <p>{{$notif->judul_tugas}}</p>
+                      </a>
+                    </li>
+                    <!-- end message -->
+                    @endif
+                    @endforeach
+                  </ul>
+                </li>
+                </ul>
+            </li>
           <li><a href="/logout"><i class="fa fa-sign-out"></i>Keluar</a></li>
         </ul>
       </div>
@@ -113,6 +155,22 @@ desired effect
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     @yield('content-header')
+    @if(Session::has('alert-success'))
+    <div class="container">
+      <div class="box box-widget">
+        <div class="box-header">
+        <h4><center><i class="fa fa-bullhorn"></i> {{Session::get('alert-success')}}</center></h4>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div>
+        </div>
+      </div>
+    </div>
+    @endif
+    @if(Session::has('errors'))
+  <div class="container alert alert-error"><h4><center><i class="fa fa-lg fa-ban"></i> Mohon periksa kembali data yang diinput!</center></h4>
+  </div>
+  @endif
     @yield('main-content')
   </div>
   <!-- /.content-wrapper -->

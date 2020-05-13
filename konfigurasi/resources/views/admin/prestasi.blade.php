@@ -13,15 +13,6 @@
 @endsection
 @section('main-content')
 <section class="content">
-  @if(Session::has('alert-success'))<div class="container">
-          <div class="box box-default">
-            <div class="box-header with-border alert-success alert">
-                <center><i class="fa fa-bullhorn"></i>
-              <h3 class="box-title ">{{Session::get('alert-success')}}</h3></center>
-            </div>
-            <!-- /.box-header -->
-          </div>
-        </div>@endif
     <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Tambah Prestasi Siswa</h3>

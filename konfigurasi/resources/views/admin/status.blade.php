@@ -14,7 +14,7 @@
 <section class="content">
       <!-- row -->
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-6">
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Status Pendaftar</h3>
@@ -43,7 +43,7 @@
                 <tr>
                   <td>{{$pendaftar->id}}</td>
                   <td>{{$pendaftar->nama}}</td>
-                  <td>{{$pendaftar->created_at}}</td>
+                  <td>{{date('d M Y',strtotime($pendaftar->created_at))}}</td>
                   <td><span class="label label-success">Approved</span></td>
                   <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
                 </tr>
@@ -53,6 +53,34 @@
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
+        </div>
+        <div class="col-md-6">
+          <div class="box box-default">
+            <div class="box-header with-border">
+              <i class="fa fa-bullhorn"></i>
+
+              <h3 class="box-title">Upload formulir pendaftaran!!!</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+              <div class="callout callout-danger">
+                <p>Klik tombol unggah di bawah ini untuk mengunggah file pendaftaran!!!.</p>
+              </div>
+              <form action="{{route('uploadfile')}}" method="post" enctype="multipart/form-data" id="file-pendaftaran">
+              {{csrf_field()}}
+                 <input type="file" name="formulir" class="form-control">
+                 @if($errors->has('formulir'))<strong class="text-danger">{{$errors->first('formulir')}}</strong>@endif
+                 <center>
+                    <a class="btn btn-app" type='button' onclick="document.getElementById('file-pendaftaran').submit()">
+                      <i class="fa fa-cloud-upload">
+                      </i>Unggah
+                    </a>
+                </center> 
+              </form>
+            </div>
+            <!-- /.box-body -->
+          </div>
         </div>
       </div>
       <!-- /.row -->

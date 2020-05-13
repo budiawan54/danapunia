@@ -21,6 +21,7 @@ class ControllerUser extends Controller
 {
     //
 
+	
 	public function json() {
 		return Dataables::of(ModelUser::all())->make(true);
 	}
@@ -29,8 +30,13 @@ class ControllerUser extends Controller
         if(!Session::get('loginguru')) {
              return redirect('login')->with('alert-error','Silakan login terlebih dahulu');
             } else {
+            $notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('tb_siswa.kelas',Session::get('akses_siswa'))
+    		->where('read',0)
+    		->get();
             $user=ModelUser::where('username',session::get('nama_guru'))->get();
-            return view('guru.profil',compact('user'));
+            return view('guru.profil',compact('user','notif'));
         }
         }
 	public function status() {
@@ -38,8 +44,13 @@ class ControllerUser extends Controller
         	return redirect('login')->with('alert-error','silakan login terlebih dahulu');
     	} else {
     	$user=ModelUser::where('username',session::get('nama_admin'))->get();
-    	$pendaftar=ModelUser::where('type','4')->get();
-    	return view('admin.status',compact('user','pendaftar'));
+		$pendaftar=ModelUser::where('type','4')->get();
+		$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+    	return view('admin.status',compact('user','pendaftar','notif'));
 		}
 	}
 
@@ -50,7 +61,12 @@ class ControllerUser extends Controller
 			$jabatan=ModelJabatan::all();
 			$pegawai=ModelPegawai::all();
 			$user=ModelUser::where('username',session::get('nama_admin'))->get();
-    		return view('admin.pegawai',compact('jabatan','pegawai','user'));
+			$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+    		return view('admin.pegawai',compact('jabatan','pegawai','user','notif'));
     	}
     }
 	public function pengguna(){
@@ -61,7 +77,12 @@ class ControllerUser extends Controller
 			$type = ModelType::where('id_type','!=','4')->get();
 			$user=ModelUser::where('username',Session::get('nama_admin'))->get();
 			$siswa = ModelSiswa::all();
-			return view('admin.pengguna',compact('pengguna','user','type','siswa'));
+			$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+			return view('admin.pengguna',compact('pengguna','user','type','siswa','notif'));
 		}
 	}
 	public function admin(){ 
@@ -69,7 +90,12 @@ class ControllerUser extends Controller
 			return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
 		} else {
 			$user=ModelUser::where('username',session::get('nama_admin'))->get();
-			return view('admin.dashboard',compact('user'));
+			$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+			return view('admin.dashboard',compact('user','notif'));
 		}
 	}
 
@@ -77,6 +103,11 @@ class ControllerUser extends Controller
     	if(!session::get('loginsiswa')){
     		return redirect('login')->with('alert-error','Silakan masuk terlebih dahulu');
     	} else {
+    		$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
     		$user=ModelUser::where('username',session::get('nama_siswa'))->get();
     		$siswa=ModelSiswa::where('id',session::get('id_siswa'))->get();
     		$kode_mp=ModelPelajaran::all();
@@ -115,7 +146,7 @@ class ControllerUser extends Controller
     			}   			
     		}
     		//dd(Session::get('akses_siswa'));
-    		return view('siswa.dashboard',compact('user','siswa','jml_tugas','categories','kode_mp','name','data','tugas','status_tugas'));
+    		return view('siswa.dashboard',compact('user','siswa','jml_tugas','categories','kode_mp','name','data','tugas','status_tugas','notif'));
     	}
     }
 
@@ -131,9 +162,14 @@ class ControllerUser extends Controller
     			->join('status','status.id_status','=','list_tugas.status')
     			->join('tb_siswa','tb_siswa.id','=','list_tugas.id_siswa')
     			->where('tb_siswa.kelas',Session::get('akses_siswa'))
-    			->whereIn('list_tugas.status',[4,3])
-    			->orderByRaw(' list_tugas.created_at DESC')
+    			->orderByRaw('list_tugas.created_at DESC')
     			->get();
+    		$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('tb_siswa.kelas',Session::get('akses_siswa'))
+    		->where('read',0)
+    		->get();
+			$tb_tugas = DB::table('list_tugas')->select('Updated_at')->get();
     		$jml_stt = count($status_tugas);
     		$tugas = DB::table('tb_tugas')
     		->where('kelas',Session::get('akses_siswa'))
@@ -145,10 +181,14 @@ class ControllerUser extends Controller
     			->get();
     			$jml_id_tugas = count($id_tugas);
     			$persentasi[$t->judul_tugas] = number_format($jml_id_tugas/$jml_siswa*100);
-    		}
-    		
-    		//dd($persentasi);
-            return view('guru.dashboard',compact('user','jml_siswa','siswa','status_tugas','jml_stt','persentasi','tugas'));
+			}
+			//$update= [];
+			foreach ($tb_tugas as $stugas){
+				$update = $stugas->Updated_at;
+			};
+			//dd($update);
+    		//dd($update->where('Update_at','09 May 2020')->get());
+            return view('guru.dashboard',compact('user','jml_siswa','siswa','status_tugas','jml_stt','persentasi','tugas','notif','update','tb_tugas'));
 			
 		}
 	}
@@ -160,7 +200,12 @@ class ControllerUser extends Controller
 			$user=ModelUser::where('username',session::get('nama_user'))->get();
 			$prestasi = ModelPrestasi::all();
 			$pres = ModelPrestasi::all();
-			return view('userbaru.userbaru',compact('user','prestasi','pres'));
+			$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('tb_siswa.kelas',Session::get('akses_siswa'))
+    		->where('read',0)
+    		->get();
+			return view('userbaru.userbaru',compact('user','prestasi','pres','notif'));
 		}
 	}
 
@@ -213,6 +258,22 @@ $this->validate($request,
 	$data->id_siswa= $request->siswa;
 	$data->save();
 	return back()->with('alert-success','Pengguna telah ditambahkan');	
+}
+
+function ubahpwd(Request $request){
+	$pesan = [
+		'required' => 'Wajib diisi',
+		'min' => 'Minimal password adalah :min karakter'
+	];
+	$this->validate($request,[
+		'pwd' => 'required|min:6'
+	],$pesan);
+	$id = $request->id;
+	$pwd = $request->password;
+	DB::table('tb_user')->where('id',$id)->update([
+		'password' => bcrypt($request->input('pwd'))
+	]);
+	//return back()->with('alert-success','Password berhasil diperbarui');
 }
 
 public function userupdate ($id, Request $request){
@@ -377,6 +438,7 @@ public function proseslogin(Request $request) {
 						Session::put('nama_guru',$datauser->username);
 						Session::put('user',$datauser->username);
 						Session::put('type',$datauser->type);
+						Session::get('id_user',$datauser->id);
 						Session::put('akses_siswa',$datauser->akses_siswa);
 						Session::put('loginguru', TRUE);
 						Session::put('login',TRUE);

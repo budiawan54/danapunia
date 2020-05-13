@@ -13,18 +13,6 @@
 @endsection
 @section('main-content')
 <section class="content">
-  @if (Session::has('alert-success'))
-    <div class="container alert alert-success">
-      <h4><center><i class="fa fa-lg fa-check"></i>{{Session::get('alert-success')}}</center></h4>
-    </div>
-  @endif
-  @if($errors->has('kode_ekstra') || $errors->has('nama_ekstra') || $errors->has('thumbnail_photos'))
-  <div class="container alert alert-error"><h4><center><i class="fa fa-lg fa-ban"></i> Mohon periksa kembali data yang diinput!</center></h4>
-  </div>
-  @endif
-  @if(Session::has('alert-success'))
-  <script type="text/javascript">window.alert('{{session::get('alert-success')}}'</script>
-  @endif
           <div class="col-sm-5">
               <div class="box box-info">
                 <div class="box-header">

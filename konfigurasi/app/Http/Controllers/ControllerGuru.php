@@ -14,6 +14,8 @@ use DB;
 class ControllerGuru extends Controller
 {
 	//
+
+	
 	function storetugas(Request $request){
 		$pesan = [
 			'mimes' => 'file harus bertipe pdf, doc atau docx',
@@ -143,10 +145,15 @@ class ControllerGuru extends Controller
 		if(!Session::get('loginguru')){
 			return redirect('login')->with('alert-error','Silakan Masuk terlebih dahulu');
 		} else {
+			$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('tb_siswa.kelas',Session::get('akses_siswa'))
+    		->where('read',0)
+    		->get();
 			$user=ModelUser::where('username',session::get('nama_guru'))->get();
 			$siswa = ModelSiswa::where('kelas',session::get('akses_siswa'))->get();
 			$ket_abs = DB::table('ket_absensi')->get();
-			return view('guru.absensi',compact('user','siswa','ket_abs'));
+			return view('guru.absensi',compact('user','siswa','ket_abs','notif'));
 		}
 	}
 	public function dtsiswa(){
@@ -180,9 +187,13 @@ class ControllerGuru extends Controller
 		if(!Session::get('loginguru')){
 			return redirect('login')->with('alert-error','Silakan Masuk terlebih dahulu');
 		} else {
-
+			$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('tb_siswa.kelas',Session::get('akses_siswa'))
+    		->where('read',0)
+    		->get();
 			$user=ModelUser::where('username',session::get('nama_guru'))->get();
-			return view('guru.cari_siswa',compact('user'));
+			return view('guru.cari_siswa',compact('user','notif'));
 		}
 	}
 	
@@ -216,12 +227,22 @@ class ControllerGuru extends Controller
     	if(!Session::get('loginguru')){
     		return redirect ('login')->with('alert-error','Silakan masuk terlebih dahulu');
     	} else {
+    		$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('tb_siswa.kelas',Session::get('akses_siswa'))
+    		->where('read',0)
+    		->get();
     		$tugas = DB::table('tb_tugas')->get();
     		$jml_tugas = count($tugas);
     		$siswa=ModelSiswa::find($id);
     		$pelajaran = ModelNilai::where('id_siswa',$id)->get();
     		$kode_mp=ModelPelajaran::all();
     		$user=ModelUser::where('username',session::get('nama_guru'))->get();
+    		$status_tugas= DB::table('list_tugas')
+    			->join('tb_tugas','tb_tugas.id_tugas','list_tugas.id_tugas')
+    			->join('status','status.id_status','=','list_tugas.status')
+    			->where('id_siswa',$id)
+    			->get();
     		$categories = [];
     		for ($i=1 ; $i<=12 ; $i++){
     			$data[$i] = [];
@@ -245,7 +266,7 @@ class ControllerGuru extends Controller
     			}   			
     		}
     		//dd(count(ModelSiswa::where('tugas_selesai')->get()));
-    		return view('guru.nilai',compact('siswa','pelajaran','kode_mp','user','categories','data','nama','jml_tugas'));
+    		return view('guru.nilai',compact('siswa','pelajaran','kode_mp','user','categories','data','nama','jml_tugas','status_tugas','notif'));
     		
     	}
     }
@@ -291,13 +312,19 @@ class ControllerGuru extends Controller
 		return back()->with('alert-success','Siswa berhasil dihapus');
 	}
 
+
     public function student() {
     	if(!Session::get('loginguru')) {
     		return redirect('login')->with('alert-error','Silakan login terlebih dahulu');
     	} else {
+    	$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('tb_siswa.kelas',Session::get('akses_siswa'))
+    		->where('read',0)
+    		->get();
     	$siswa1 = ModelSiswa::where('kelas','=',session::get('akses_siswa'))->get();
     	$user=ModelUser::where('username',session::get('nama_guru'))->get();
-    	return view('guru.siswa',compact('siswa1','user'));
+    	return view('guru.siswa',compact('siswa1','user','notif'));
     	}
 
     }
@@ -396,7 +423,12 @@ class ControllerGuru extends Controller
 			return redirect ('login')->with('alert-error','Silakan login terlebih dahulu');
 		} else {
 			$user=ModelUser::where('username',session::get('nama_admin'))->get();
-			return view('admin.mapel',compact('user'));
+			$notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+			return view('admin.mapel',compact('user','notif'));
 		}
 	}
 

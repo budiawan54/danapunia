@@ -1,4 +1,3 @@
-
 @extends('admin.master')
 <title>Nilai Siswa</title>
 <link rel="icon" href="{{asset('img/logo.ico')}}">
@@ -46,7 +45,7 @@
         <div class="col-md-8">
           <div class="box box-primary">
             <div class="box-header">
-              <h2 class="box-title">Daftar tugas</h2>
+              <h2 class="box-title">Daftar tugas yang diupload</h2>
                <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                 </div>
@@ -60,7 +59,23 @@
                       <th>File</th>
                       <th>Status</th>
                     </tr>
-                  </thead> 
+                  </thead>
+                  <tbody>
+                    <?php $i=0; ?>
+                    @foreach ($status_tugas as $st)
+                    <?php $i++; ?>
+                    <tr>
+                      <td>{{$i}}</td>
+                      <td>{{$st->judul_tugas}}</td>
+                      <td>{{$st->comment}}</td>
+                      <td><a href="">{{$st->file}}</a></td>
+                      <td>
+                        <a id="editable" data-pk='' data-name='' ><span class="label @if($st->nama_status == 'Disetujui') label-success @elseif ($st->nama_status == 'Tidak disetujui') label-danger @elseif ($st->nama_status == 'Kurang Lengkap') label-warning @elseif ($st->nama_status == 'Belum diperiksa') label-info @endif">{{$st->nama_status}}</span></a>
+                    </a>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
                 </table>
               </div>
           </div> 
@@ -452,7 +467,6 @@ $(function(){
       headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"}, 
       beforeSend:function(){
         $('p').remove();
-       
       },
       success:process,
       error: function(xhr){

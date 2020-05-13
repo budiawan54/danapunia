@@ -29,6 +29,69 @@
           </div>
         </div>@endif
         <!-- /.carousel -->
+        <div class="row">
+        <div class="col-md-6">
+          <div class="box box-default">
+            <div class="box-header with-border">
+              <i class="fa fa-bullhorn"></i>
+
+              <h3 class="box-title">Buruan Daftar!!!</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+              <div class="callout callout-info">
+                <h4>Lihat lebih banyak kegiatan siswa kami di situs resmi <a href="">SD Dana Punia Singaraja</a></h4>
+
+                <p>Klik tombol download file di bawah ini untuk mengisi formulir pendaftaran!!!.</p>
+              </div>
+              <center><a class="btn btn-app" href="{{url('/storage/file-pendaftaran/file-pendaftaran.pdf')}}">
+                <i class="fa fa-cloud-download"></i> Download
+              </a></center>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="box box-default">
+            <div class="box-header with-border">
+              <i class="fa fa-bullhorn"></i>
+
+              <h3 class="box-title">Buruan Daftar!!!</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+              <div class="callout callout-danger">
+                <h4>Lihat batas pendaftaran siswa di situs resmi <a href="http://sddanapunia.com">SD Dana Punia Singaraja</a> sebelum terlambat.</h4>
+
+                <p>Klik tombol unggah di bawah ini untuk mengunggah file pendaftaran!!!.</p>
+              </div>
+              <form action="{{route('uploadfile')}}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label>Alasan memilih SD Dana Punia Singaraja :</label>
+                  <textarea class="form-control" name="alasan" id="alasan" rows="5" placeholder="Deskripsikan secara singkat...."></textarea>
+                </div>
+                <div class="form-group">
+                  <div class="btn btn-default btn-file">
+                    <i class="fa fa-paperclip"></i>
+                    <input type="file" name="formulir" id="formulir">
+                  </div> <strong id="preview"></strong>
+                  <p>* Maksimal ukuran file adalah 32MB</p>
+                </div>
+                 <center>
+                  <a class="btn btn-app" type='submit'>
+                    <i class="fa fa-cloud-upload">
+                    </i>Unggah
+                  </a>
+                </center> 
+              </form>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-6">
           <div class="box box-solid">
             <div class="box-header with-border">
@@ -99,60 +162,9 @@
           </div>
         </div>
         <!-- AKHIR KOLOM KANAN-->
-
-      <!---BARIS-->
-      <div class="row">
-        <div class="col-md-6">
-          <div class="box box-default">
-            <div class="box-header with-border">
-              <i class="fa fa-bullhorn"></i>
-
-              <h3 class="box-title">Buruan Daftar!!!</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-
-              <div class="callout callout-info">
-                <h4>Lihat lebih banyak kegiatan siswa kami di situs resmi <a href="">SD Dana Punia Singaraja</a></h4>
-
-                <p>Klik tombol download file di bawah ini untuk mengisi formulir pendaftaran!!!.</p>
-              </div>
-              <center><a class="btn btn-app">
-                <i class="fa fa-cloud-download"></i> Download
-              </a></center>
-            </div>
-            <!-- /.box-body -->
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="box box-default">
-            <div class="box-header with-border">
-              <i class="fa fa-bullhorn"></i>
-
-              <h3 class="box-title">Buruan Daftar!!!</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-
-              <div class="callout callout-danger">
-                <h4>Lihat batas pendaftaran siswa di situs resmi <a href="http://sddanapunia.com">SD Dana Punia Singaraja</a> sebelum terlambat.</h4>
-
-                <p>Klik tombol unggah di bawah ini untuk mengunggah file pendaftaran!!!.</p>
-              </div>
-              <form action="">
-                 <input type="file" name="formulir" class="form-control">
-                 <center>
-                  <a class="btn btn-app">
-                    <i class="fa fa-cloud-upload">
-                    </i>Unggah
-                  </a>
-                </center> 
-              </form>
-            </div>
-            <!-- /.box-body -->
-          </div>
-        </div>
       </div>
+      <!---BARIS-->
+      
       <!--AKHIR BARIS-->
     </section>
     <!-- /.content -->

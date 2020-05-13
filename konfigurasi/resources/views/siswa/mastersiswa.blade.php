@@ -8,7 +8,7 @@
     <nav class="navbar navbar-static-top">
       <div style="padding-left: 10px; padding-right: 5px">
         <div class="navbar-header">
-          <img src="{{asset('img/img-banner.png')}}" alt="baner" style="width: 180px ;">
+          <img src="{{asset('img/baner.png')}}" alt="baner" style="width: 180px ;">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>
@@ -43,64 +43,49 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
-            <!-- Notifications Menu -->
-            <li class="dropdown notifications-menu">
-              <!-- Menu toggle button -->
+            <li class="dropdown messages-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-bell-o"></i>
-                <span class="label label-warning">10</span>
+                  @if(count($notif)>0)
+                <span class="label label-warning">
+                  {{
+                    count($notif->where('category','re-tugas')->where('id_siswa',Session::get('id_siswa')))
+                  }}
+                </span>
+                @endif
               </a>
               <ul class="dropdown-menu">
-                <li class="header">You have 10 notifications</li>
+                @if(count($notif)>0 )
+                <li class="header">Kamu Punya {{
+                    count($notif->where('category','re-tugas')->where('id_siswa',Session::get('id_siswa')))
+                  }} pemberitahuan</li>
+                @else
+                <li class="header">Tidak ada pemberitahuan </li>
+                @endif
                 <li>
-                  <!-- Inner Menu: contains the notifications -->
+                  <!-- inner menu: contains the actual data -->
                   <ul class="menu">
-                    <li><!-- start notification -->
-                      <a href="#">
-                        <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                      </a>
-                    </li>
-                    <!-- end notification -->
-                  </ul>
-                </li>
-                <li class="footer"><a href="#">View all</a></li>
-              </ul>
-            </li>
-            <!-- Tasks Menu -->
-            <li class="dropdown tasks-menu">
-              <!-- Menu Toggle Button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-flag-o"></i>
-                <span class="label label-danger">{{$jml_tugas}}</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="header">Kamu Punya {{$jml_tugas}} tugas</li>
-                <li>
-                  <!-- Inner menu: contains the tasks -->
-                  <ul class="menu">
-                    <li><!-- Task item -->
-                      <a href="#">
-                        <!-- Task title and progress text -->
-                        <h3>
-                          Design some buttons
-                          <small class="pull-right">20%</small>
-                        </h3>
-                        <!-- The progress bar -->
-                        <div class="progress xs">
-                          <!-- Change the css width attribute to simulate progress -->
-                          <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                            <span class="sr-only">20% Complete</span>
-                          </div>
+                    @foreach ($notif as $notif)
+                    @if (($notif->category == 're-tugas') && ($notif->id_siswa == Session::get('id_siswa')))
+                    <li>
+                    <!-- start message -->
+                      <a href="/siswa/tugas">
+                        <div class="pull-left">
+                          <i class="fa fa-lg fa-flag text-danger"></i>
                         </div>
+                        <h4>Pemberitahuan
+                          <small id="waktu" onloadeddata="baju()"><i class="fa fa-clock-o"></i>{{$notif->Updated_At}}</small>
+                        </h4>
+                        <p>{{$notif->pesan}} :{{$notif->judul_tugas}}</p>
                       </a>
                     </li>
-                    <!-- end task item -->
+                    <!-- end message -->
+                    @endif
+                    @endforeach
                   </ul>
                 </li>
-                <li class="footer">
-                  <a href="{{route('tugas')}}">Lihat semua tugas</a>
-                </li>
-              </ul>
+                <li class="footer"><a href="#">See All Messages</a></li>
+                </ul>
             </li>
             <!-- User Account Menu -->
             @foreach ($siswa as $siswa)
@@ -162,9 +147,13 @@
 @include('template.js')
 <script type="text/javascript">
 $(function(){
+  var notif = moment($('small#waktu').text());
+  notif.locale('id')
+  console.log(notif.format("dddd, MMMM Do YYYY"));
   $('#calender-siswa').fullCalendar({
+    locale : 'id',
     header    : {
-        left  : 'prev,next today',
+        left  : 'prev,next, today',
         center: 'title'
       },
       events    : '{{route('loadabsensi')}}',

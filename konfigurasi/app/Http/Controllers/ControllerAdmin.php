@@ -22,6 +22,24 @@ use DB;
 class ControllerAdmin extends Controller
 {
     //
+    public function uploadfile(Request $request){
+        $pesan = [
+            'required' => 'Wajib diisi',
+            'mimes' => 'File harus bertipe pdf',
+            'max' => 'Ukuran file tidak boleh lebih dari 32MB'
+        ];
+        $this->validate($request,[
+            'formulir'=> 'required|file|mimes:pdf|max:32768'
+        ],$pesan);
+
+        $formulir = $request->file('formulir');
+        $namaformulir = $formulir->getClientOriginalExtension();
+        $folder = 'storage/file-pendaftaran';
+        $newname = 'file-pendaftaran.'.$namaformulir;
+        $formulir->move($folder,$newname);
+        return back()->with('alert-success','File pendaftaran berhasil di upload');
+    }
+
     public function dtjadwalmengajar(){
         $jadwalmengajar= DB::table('jadwalpelajaran')
              ->join('tb_pelajaran','jadwalpelajaran.matapelajaran','=','tb_pelajaran.id_pelajaran')
@@ -122,13 +140,23 @@ class ControllerAdmin extends Controller
                 ->get();
             $pelajaran = ModelPelajaran::all();
             $jabatan = ModelPegawai::where('status','like','guru%')->get();
-            return view('guru.pelajaran',compact('user','pelajaran','jabatan')) ; 
+            $notif = DB::table('notifikasi')
+            ->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+            ->where('tb_siswa.kelas',Session::get('akses_siswa'))
+            ->where('read',0)
+            ->get();
+            return view('guru.pelajaran',compact('user','pelajaran','jabatan','notif')) ; 
         } else {
             $user = ModelUser::where('username', Session::get('user'))
                 ->get();
             $jabatan = ModelPegawai::where('status','like','guru%')->get();
             $pelajaran = ModelPelajaran::all();
-            return view('admin.pelajaran',compact('user','jabatan','pelajaran')) ;       
+            $notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+            return view('admin.pelajaran',compact('user','jabatan','pelajaran','notif')) ;       
         }
 
 
@@ -162,10 +190,6 @@ class ControllerAdmin extends Controller
                 ->make(true);
 
     }
-
-    
-
-
     public function dtkegiatan(){
         $kegiatan=ModelKegiatan::all();
         return DataTables::of($kegiatan)
@@ -199,25 +223,20 @@ class ControllerAdmin extends Controller
             $gabungan = array($kegiatan,$ekskul,$prestasi,$pegawai,$siswa,$jadwalpelajaran,$nilai,$absensi);
             echo json_encode($gabungan);
     }
-
     public function delete($id){
         $kegiatan = ModelKegiatan::find($id);
         File::delete('foto_kegiatan/'.$kegiatan->foto_kegiatan);  
         $kegiatan->delete();      
         return redirect('admin/kegiatan')->with('alert-success','Data kegiatan berhasil dihapus');
     }
-
     public function deletejp($id){
         $jadwalpelajaran = jadwalpelajaran::find($id); 
         $jadwalpelajaran->delete();      
         return redirect('admin/jadwal-pelajaran')->with('alert-success','Data jadwal pelajaran berhasil dihapus');
     }
 
-
-
     public function dtekskul(){$ekskul=ModelEkskul::all();
-        return DataTables::of($ekskul)
-                
+        return DataTables::of($ekskul) 
                 ->addColumn('action',function($ekskul){
                     $button = '<a  name="edit" id="'.$ekskul->id.'" class="btn-edit label label-warning"><i class="fa fa-edit"></i></a>';
                     $button .='&nbsp';
@@ -227,14 +246,6 @@ class ControllerAdmin extends Controller
                 ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->make(true);
-            }
-
-    public function newstudent(){
-        if (!session::get('loginadmin')){
-            return redirect ('login')->with('alert-error','Silakan masuk terlebih dahulu');
-        } else {
-           
-        }
     }
 
     public function calendar(){
@@ -245,7 +256,12 @@ class ControllerAdmin extends Controller
             $event = Event::all();
             $user = ModelUser::where('username', Session::get('user'))
                 ->get();
-            return view('admin.kalender_kegiatan',compact('user','event'));
+            $notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+            return view('admin.kalender_kegiatan',compact('user','event','notif'));
         }
     }
 
@@ -322,7 +338,12 @@ class ControllerAdmin extends Controller
         } else {
             $ekstra = ModelEkskul::all();
             $user = ModelUser::where('username', Session::get('nama_admin'))->get();
-            return view('admin.kurikuler',compact('ekstra','user'));
+            $notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+            return view('admin.kurikuler',compact('ekstra','user','notif'));
         }
     }
 
@@ -331,7 +352,12 @@ class ControllerAdmin extends Controller
                 return redirect('login');
             } else {
             $user=ModelUser::where('username',session::get('nama_admin'))->get();
-            return view('admin.profil',compact('user'));
+            $notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+            return view('admin.profil',compact('user','notif'));
         }
         }
         
@@ -410,7 +436,12 @@ class ControllerAdmin extends Controller
         } else {
             $prestasi=ModelPrestasi::all();
             $user=ModelUser::where('username',session::get('nama_admin'))->get();
-            return view('admin.prestasi',compact('prestasi','user'));
+            $notif = DB::table('notifikasi')
+    		->join('tb_siswa','tb_siswa.id','=','notifikasi.id_siswa')->join('tb_tugas','tb_tugas.id_tugas','=','notifikasi.id_tugas')
+    		->where('read',0)
+    		->orderByRaw('notifikasi.Updated_At DESC')
+    		->get();
+            return view('admin.prestasi',compact('prestasi','user','notif'));
         }
     }
  
